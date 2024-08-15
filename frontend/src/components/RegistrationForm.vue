@@ -41,7 +41,8 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn :to="{name: 'home'}">
+                <v-btn :to="{name: 'home'}"
+                    @click="authenti">
                     Зарегистрироваться
                 </v-btn>
             </v-col>
@@ -60,6 +61,11 @@
                     password: ''
                 }
             }
-        }
+        },
+        methods: {
+            authenti() {
+                this.$store.commit('addPerson', this.person)
+            }
+        },
     }
 </script>
