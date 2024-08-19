@@ -55,7 +55,7 @@
         },
         methods: {
             authentication() {
-                this.$store.commit('setPerson', this.person)
+                this.$store.commit('person/setPerson', this.person)
             }
         },
     }

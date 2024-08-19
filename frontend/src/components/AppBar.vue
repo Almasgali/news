@@ -15,7 +15,6 @@
       Войти
     </v-btn>
   </v-app-bar>
-  
 </template>
 
 <script>
@@ -27,7 +26,7 @@
     },
     computed: {
       name() {
-        let name = this.$store.getters['getName'].trim();
+        let name = this.$store.getters['person/getName'].trim();
         if (name !== '') {
           this.show = true;
         }
@@ -36,7 +35,7 @@
     },
     methods: {
       exit() {
-        this.$store.commit('delPerson');
+        this.$store.commit('person/delPerson');
         this.show = false;
       }
     }
