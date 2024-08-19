@@ -44,10 +44,15 @@ public class ArticleService {
     public void likeArticle(long articleId, long userId) {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
-        user.addLikedArticle(article);
-        article.addLikedUser(user);
+        if (!user.isArticleLiked(article)) {
+            user.addLikedArticle(article);
+            article.addLikedUser(user);
+        } else {
+            user.removeLikedArticle(article);
+            article.removeLikedUser(user);
+        }
         userRepository.save(user);
-        articleRepository.save(article)
+        articleRepository.save(article);
     }
 
     public void commentArticle(long articleId, long userId, CommentRequest commentRequest) {

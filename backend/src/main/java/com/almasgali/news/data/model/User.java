@@ -48,8 +48,16 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<Article> likedArticles;
 
+    public boolean isArticleLiked(Article article) {
+        return likedArticles.contains(article);
+    }
+
     public void addLikedArticle(Article article) {
         likedArticles.add(article);
+    }
+
+    public void removeLikedArticle(Article article) {
+        likedArticles.remove(article);
     }
 
     public void addComment(Comment comment) {

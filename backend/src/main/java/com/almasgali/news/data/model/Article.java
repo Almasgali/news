@@ -40,6 +40,10 @@ public class Article {
         likedUsers.add(user);
     }
 
+    public void removeLikedUser(User user) {
+        likedUsers.remove(user);
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
