@@ -1,6 +1,10 @@
 package com.almasgali.news.repository;
 
 import com.almasgali.news.data.model.Article;
+import com.almasgali.news.data.model.Comment;
+import com.almasgali.news.data.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,10 +17,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a FROM Article a WHERE date >= :oneDayAgoDate ORDER BY date")
     List<Article> findAllWithDateAfter(@Param("oneDayAgoDate") LocalDateTime oneDayAgoDate);
 
-//    @Query(
-//            value = "UPDATE article SET balance = balance + ?2 WHERE id = ?1",
-//            nativeQuery = true
-//    )
-//    @Modifying
-//    int likeArticle(long id, @Min(0) long amount);
+    List<User> findByLikedUsersLikedArticlesId(long articleId);
+
+    Page<Comment> findByCommentsArticleId(long articleId, Pageable p);
 }

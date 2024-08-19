@@ -1,5 +1,6 @@
 package com.almasgali.news.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -30,7 +30,9 @@ public class Article {
     private String text;
     private LocalDateTime date;
     @OneToMany(mappedBy = "article")
-    private Set<Comment> comment;
+    @JsonIgnore
+    private Set<Comment> comments;
     @ManyToMany(mappedBy = "likedArticles")
-    private Set<User> likes;
+    @JsonIgnore
+    private Set<User> likedUsers;
 }

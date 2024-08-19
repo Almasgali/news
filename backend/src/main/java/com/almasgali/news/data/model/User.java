@@ -1,5 +1,6 @@
 package com.almasgali.news.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,12 +38,14 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Comment> comment;
     @ManyToMany
     @JoinTable(
             name = "article_like",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
+    @JsonIgnore
     private Set<Article> likedArticles;
 
     @Override

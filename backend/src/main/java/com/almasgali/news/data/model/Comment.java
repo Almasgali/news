@@ -1,5 +1,6 @@
 package com.almasgali.news.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class Comment {
     private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", referencedColumnName = "id")
+    @JsonIgnore
     private Article article;
     private LocalDateTime date;
 }
