@@ -1,5 +1,6 @@
 package com.almasgali.news.service;
 
+import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
 import com.almasgali.news.data.model.Article;
 import com.almasgali.news.data.model.Comment;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ArticleService {
@@ -37,6 +39,31 @@ public class ArticleService {
 
     public List<User> getLikedUsers(long articleId) {
         return userRepository.findByLikedArticlesId(articleId);
+    }
+
+    public void likeArticle(long articleId, long userId) {
+        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
+        user.addLikedArticle(article);
+        article.addLikedUser(user);
+        userRepository.save(user);
+        articleRepository.save(article)
+    }
+
+    public void commentArticle(long articleId, long userId, CommentRequest commentRequest) {
+        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
+        Comment comment = Comment.builder()
+                .article(article)
+                .user(user)
+                .date(LocalDateTime.now())
+                .text(commentRequest.getText())
+                .build();
+        commentRepository.save(comment);
+        article.addComment(comment);
+        articleRepository.save(article);
+        user.addComment(comment);
+        userRepository.save(user);
     }
 
     public CommentResponse getComments(long articleId, Pageable p) {

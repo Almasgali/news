@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private String password;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Set<Comment> comment;
+    private Set<Comment> comments;
     @ManyToMany
     @JoinTable(
             name = "article_like",
@@ -47,6 +47,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     @JsonIgnore
     private Set<Article> likedArticles;
+
+    public void addLikedArticle(Article article) {
+        likedArticles.add(article);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

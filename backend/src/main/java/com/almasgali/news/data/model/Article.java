@@ -35,4 +35,12 @@ public class Article {
     @ManyToMany(mappedBy = "likedArticles")
     @JsonIgnore
     private Set<User> likedUsers;
+
+    public void addLikedUser(User user) {
+        likedUsers.add(user);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 }
