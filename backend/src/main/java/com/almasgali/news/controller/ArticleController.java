@@ -33,12 +33,12 @@ public class ArticleController {
         return articleService.getLatestNews();
     }
 
-    @GetMapping("/likes/{id}")
+    @GetMapping("/{id}/likes")
     public List<User> getLikedUsers(@PathVariable long id) {
         return articleService.getLikedUsers(id);
     }
 
-    @GetMapping("/comments/{id}")
+    @GetMapping("/{id}/comments")
     public CommentResponse getComments(
             @PathVariable long id,
             @RequestParam(defaultValue = "0") int page,
