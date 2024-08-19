@@ -18,10 +18,13 @@ import com.almasgali.news.service.JwtService;
 @RestController
 public class AuthController {
 
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private AuthService authenticationService;
+    private final JwtService jwtService;
+    private final AuthService authenticationService;
+
+    public AuthController(@Autowired JwtService jwtService, @Autowired AuthService authService) {
+        this.jwtService = jwtService;
+        this.authenticationService = authService;
+    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)

@@ -6,6 +6,7 @@ import com.almasgali.news.data.model.User;
 import com.almasgali.news.exception.auth.UserAlreadyExistsException;
 import com.almasgali.news.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,19 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    public AuthService(@Autowired UserRepository userRepository,
+                       @Autowired PasswordEncoder passwordEncoder,
+                       @Autowired AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
     public User signup(RegisterRequest request) {
 

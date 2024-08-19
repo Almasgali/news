@@ -14,10 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comments", schema = "public")
+@Table(name = "comment", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -26,6 +27,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
     private long id;
+    @Size(max = 1000, min = 1, message = "Comment length should be in interval 1-1000.")
     private String text;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

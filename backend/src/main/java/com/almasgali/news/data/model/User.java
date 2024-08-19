@@ -22,14 +22,14 @@ import java.util.Collections;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "user", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private long id;
     private String name;
     private String surname;
