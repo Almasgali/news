@@ -1,10 +1,19 @@
 <template>
   <v-app-bar>
-    <v-spacer></v-spacer>
+    <v-spacer/>
     {{ name }}
-    <v-btn v-if="show" @click="exit"><v-icon icon="mdi-login"></v-icon></v-btn>
-    <v-btn v-else :to="{name: 'authentication'}">Войти</v-btn>
-    
+    <v-btn
+      v-if="show"
+      @click="exit"
+    >
+      <v-icon icon="mdi-login"/>
+    </v-btn>
+    <v-btn
+      v-else
+      :to="{name: 'authentication'}"
+    >
+      Войти
+    </v-btn>
   </v-app-bar>
   
 </template>

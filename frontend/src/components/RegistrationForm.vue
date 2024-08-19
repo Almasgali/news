@@ -5,7 +5,7 @@
                 <h3>Регистрация нового пользователся</h3>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row justify="center">
             <v-col cols="2">
                 <v-text-field
                     type="text" 
@@ -21,7 +21,7 @@
                 />
             </v-col>
         </v-row>
-        <v-row>
+        <v-row justify="center">
             <v-col cols="4">
                 <v-text-field
                     type="email" 
@@ -30,7 +30,7 @@
                 />
             </v-col>
         </v-row>
-        <v-row>
+        <v-row justify="center">
             <v-col cols="4">
                 <v-text-field
                     type="password" 
@@ -42,7 +42,7 @@
         <v-row>
             <v-col>
                 <v-btn :to="{name: 'home'}"
-                    @click="authenti">
+                    @click="registration">
                     Зарегистрироваться
                 </v-btn>
             </v-col>
@@ -63,7 +63,7 @@
             }
         },
         methods: {
-            authenti() {
+            registration() {
                 this.$store.commit('addPerson', this.person)
             }
         },

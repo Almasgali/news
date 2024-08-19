@@ -6,14 +6,12 @@ export default {
       email: '',
       password: ''
     },
-    validName: /^([a-z]+|[а-яё]+)(\s([a-z]+|[а-яё]+)){0,2}$/i
+    validNameReg: /^([a-z]+|[а-яё]+)(\s([a-z]+|[а-яё]+)){0,2}$/i,
+    validEmailReg: /^$/
   },
   getters: {
     getName: state => {
       return state.person.name + ' ' + state.person.lastName;
-    },
-    getValidName: (state) => {
-      return state.validName; 
     }
   },
   mutations: {
@@ -31,9 +29,9 @@ export default {
         password: ''
       }
     },
-    setPeople: (state, data) => {
-      state.person.name = data.name;
-      state.person.lastName = data.lastName;
+    setPerson: (state, data) => {
+      state.person.email = data.email;
+      state.person.password = data.password;
     }
   },
   actions: {
