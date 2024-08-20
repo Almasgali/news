@@ -1,9 +1,7 @@
 <template>
   <v-container>
     <AppBar/>
-    <NewsArticle
-      v-if="this.$store.getters['person/getName'].trim() !== ''"
-    />
+    <NewsArticle/>
   </v-container>
 </template>
 
