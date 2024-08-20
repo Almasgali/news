@@ -22,7 +22,7 @@
                 <v-col>
                     <v-text-field
                       v-model="person.password"
-                      :rules="rules.eroorPassword"
+                      :rules="rules.errorPassword"
                       type="password"
                       label="Пароль"
                     />
@@ -47,7 +47,6 @@
                 </v-col>
             </v-row>
         </v-container>
-        {{ person }}
     </v-form>
 </template>
 
@@ -67,7 +66,7 @@
                             return pattern.test(v) || 'Почта введена неверно';
                         }
                     ],
-                    eroorPassword: [
+                    errorPassword: [
                         v => !!v || 'Введите пароль'
                     ]
                 }

@@ -9,40 +9,45 @@
             <v-row justify="center">
                 <v-col>
                     <v-text-field
+                      v-model="person.name"
+                      :rules="rules.errorName"
                       type="text" 
                       label="Имя"
-                      v-model="person.name" 
                     />
                 </v-col>
                 <v-col>
                     <v-text-field
+                      v-model="person.lastName"
+                      :rules="rules.errorLastName"
                       type="text" 
                       label="Фамилия"
-                      v-model="person.lastName" 
                     />
                 </v-col>
             </v-row>
             <v-row justify="center">
                 <v-col>
                     <v-text-field
+                      v-model="person.email" 
+                      :rules="rules.errorEmail"
                       type="email" 
                       label="Email"
-                      v-model="person.email" 
                     />
                 </v-col>
             </v-row>
             <v-row justify="center">
                 <v-col>
                     <v-text-field
+                      v-model="person.password"
+                      :rules="rules.errorPassword"
                       type="password" 
                       label="Пароль"
-                      v-model="person.password" 
                     />
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-btn
+                      :disabled="btnDisabled"
                       :to="{name: 'home'}"
                       @click="registration"
                     >
@@ -63,7 +68,47 @@
                     lastName: '',
                     email: '',
                     password: ''
+                },
+                rules: {
+                    errorName: [
+                        v => !!v || 'Введите Имя',
+                        v => {
+                            const pattern = this.$store.state.person.validNameReg;
+                            return pattern.test(v) || 'Имя может содержать только буквы';
+                        }
+                    ],
+                    errorLastName: [
+                        v => !!v || 'Введите Фамилию',
+                        v => {
+                            const pattern = this.$store.state.person.validNameReg;
+                            return pattern.test(v) || 'Фамилия может содержать только буквы';
+                        }
+                    ],
+                    errorEmail: [
+                        v => !!v || 'Введите почту',
+                        v => {
+                            const pattern = this.$store.state.person.validEmailReg;
+                            return pattern.test(v) || 'Почта введена неверно';
+                        }
+                    ],
+                    errorPassword: [
+                        v => !!v || 'Введите пароль',
+                        v => {
+                            const pattern = this.$store.state.person.validPasswordReg;
+                            return pattern.test(v) || 'Пароль должен содержать не менее 8 символов, хотя бы одну заглавую и строчную буквы, цифру и спец символ #?!@$%^&*-';
+                        }
+                    ]
                 }
+            }
+        },
+        computed: {
+            btnDisabled() {
+                for (let key in this.person) {
+                    if (!this.person[key]) {
+                        return true;
+                    }
+                }
+                return false;
             }
         },
         methods: {
