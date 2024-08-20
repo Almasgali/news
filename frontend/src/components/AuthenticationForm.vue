@@ -12,6 +12,7 @@
                 <v-col>
                     <v-text-field
                       v-model="person.email"
+                      :rules="rules.errorEmail"
                       type="email" 
                       label="Email"
                     />
@@ -21,6 +22,7 @@
                 <v-col>
                     <v-text-field
                       v-model="person.password"
+                      :rules="rules.eroorPassword"
                       type="password"
                       label="Пароль"
                     />
@@ -29,6 +31,7 @@
             <v-row>
                 <v-col>
                     <v-btn
+                      :disabled="bntDisabled"
                       :to="{name: 'home'}"
                       @click="authentication"
                     >
@@ -44,6 +47,7 @@
                 </v-col>
             </v-row>
         </v-container>
+        {{ person }}
     </v-form>
 </template>
 
@@ -54,7 +58,24 @@
                 person: {
                     email: '',
                     password: ''
+                },
+                rules: {
+                    errorEmail: [
+                        v => !!v || 'Введите почту',
+                        v => {
+                            const pattern = this.$store.state.person.validEmailReg;
+                            return pattern.test(v) || 'Почта введена неверно';
+                        }
+                    ],
+                    eroorPassword: [
+                        v => !!v || 'Введите пароль'
+                    ]
                 }
+            }
+        },
+        computed: {
+            bntDisabled() {
+                return !this.person.email || !this.person.password;
             }
         },
         methods: {

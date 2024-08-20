@@ -8,7 +8,8 @@ export default {
       password: ''
     },
     validNameReg: /^([a-z]+|[а-яё]+)(\s([a-z]+|[а-яё]+)){0,2}$/i,
-    validEmailReg: /^$/
+    validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
+    validPasswordReg: /^$/
   },
   getters: {
     getName: state => {
