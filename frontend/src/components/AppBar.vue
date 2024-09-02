@@ -1,12 +1,20 @@
 <template>
   <v-app-bar>
-    <v-spacer></v-spacer>
+    <v-spacer/>
     {{ name }}
-    <v-btn v-if="show" @click="exit"><v-icon icon="mdi-login"></v-icon></v-btn>
-    <v-btn v-else :to="{name: 'authentication'}">Войти</v-btn>
-    
+    <v-btn
+      v-if="show"
+      @click="exit"
+    >
+      <v-icon icon="mdi-login"/>
+    </v-btn>
+    <v-btn
+      v-else
+      :to="{name: 'authentication'}"
+    >
+      Войти
+    </v-btn>
   </v-app-bar>
-  
 </template>
 
 <script>
@@ -18,7 +26,7 @@
     },
     computed: {
       name() {
-        let name = this.$store.getters['getName'].trim();
+        let name = this.$store.getters['person/getName'].trim();
         if (name !== '') {
           this.show = true;
         }
@@ -27,7 +35,7 @@
     },
     methods: {
       exit() {
-        this.$store.commit('delPerson');
+        this.$store.commit('person/delPerson');
         this.show = false;
       }
     }

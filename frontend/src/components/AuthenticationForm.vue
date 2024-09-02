@@ -1,40 +1,52 @@
 <template>
     <v-form @submit.prevent="">
-        <v-row>
-            <v-col>
-                <h3>Вход в личный аккаунт</h3>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="4">
-                <v-text-field
-                    type="email" 
-                    label="Email"
-                    v-model="person.email" 
-                />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="4">
-                <v-text-field
-                    type="password" 
-                    label="Пароль"
-                    v-model="person.password" 
-                />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-btn :to="{name: 'home'}">
-                    Войти
-                </v-btn>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <router-link :to="{name: 'registration'}">Нет аккаунта? Создать</router-link>
-            </v-col>
-        </v-row>
+        <v-container class="container">
+            <v-row>
+                <v-col>
+                    <h3>
+                        Вход в личный аккаунт
+                    </h3>
+                </v-col>
+            </v-row>
+            <v-row justify="center">
+                <v-col>
+                    <v-text-field
+                      v-model="person.email"
+                      :rules="rules.errorEmail"
+                      type="email" 
+                      label="Email"
+                    />
+                </v-col>
+            </v-row>
+            <v-row justify="center">
+                <v-col>
+                    <v-text-field
+                      v-model="person.password"
+                      :rules="rules.errorPassword"
+                      type="password"
+                      label="Пароль"
+                    />
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-btn
+                      :disabled="bntDisabled"
+                      :to="{name: 'home'}"
+                      @click="authentication"
+                    >
+                        Войти
+                    </v-btn>
+                </v-col>
+            </v-row>
+            <v-row justify="end">
+                <v-col cols="6">
+                    <router-link :to="{name: 'registration'}">
+                        Нет аккаунта? Создать
+                    </router-link>
+                </v-col>
+            </v-row>
+        </v-container>
     </v-form>
 </template>
 
@@ -45,8 +57,30 @@
                 person: {
                     email: '',
                     password: ''
+                },
+                rules: {
+                    errorEmail: [
+                        v => !!v || 'Введите почту',
+                        v => {
+                            const pattern = this.$store.state.person.validEmailReg;
+                            return pattern.test(v) || 'Почта введена неверно';
+                        }
+                    ],
+                    errorPassword: [
+                        v => !!v || 'Введите пароль'
+                    ]
                 }
             }
-        }
+        },
+        computed: {
+            bntDisabled() {
+                return !this.person.email || !this.person.password;
+            }
+        },
+        methods: {
+            authentication() {
+                this.$store.commit('person/setPerson', this.person)
+            }
+        },
     }
 </script>

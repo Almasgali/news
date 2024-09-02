@@ -1,52 +1,61 @@
 <template>
     <v-form @submit.prevent="">
-        <v-row>
-            <v-col>
-                <h3>Регистрация нового пользователся</h3>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="2">
-                <v-text-field
-                    type="text" 
-                    label="Имя"
-                    v-model="person.name" 
-                />
-            </v-col>
-            <v-col cols="2">
-                <v-text-field
-                    type="text" 
-                    label="Фамилия"
-                    v-model="person.lastName" 
-                />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="4">
-                <v-text-field
-                    type="email" 
-                    label="Email"
-                    v-model="person.email" 
-                />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="4">
-                <v-text-field
-                    type="password" 
-                    label="Пароль"
-                    v-model="person.password" 
-                />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-btn :to="{name: 'home'}"
-                    @click="authenti">
-                    Зарегистрироваться
-                </v-btn>
-            </v-col>
-        </v-row>
+        <v-container class="container">
+            <v-row>
+                <v-col>
+                    <h3>Регистрация нового пользователся</h3>
+                </v-col>
+            </v-row>
+            <v-row justify="center">
+                <v-col>
+                    <v-text-field
+                      v-model="person.name"
+                      :rules="rules.errorName"
+                      type="text" 
+                      label="Имя"
+                    />
+                </v-col>
+                <v-col>
+                    <v-text-field
+                      v-model="person.lastName"
+                      :rules="rules.errorLastName"
+                      type="text" 
+                      label="Фамилия"
+                    />
+                </v-col>
+            </v-row>
+            <v-row justify="center">
+                <v-col>
+                    <v-text-field
+                      v-model="person.email" 
+                      :rules="rules.errorEmail"
+                      type="email" 
+                      label="Email"
+                    />
+                </v-col>
+            </v-row>
+            <v-row justify="center">
+                <v-col>
+                    <v-text-field
+                      v-model="person.password"
+                      :rules="rules.errorPassword"
+                      type="password" 
+                      label="Пароль"
+                    />
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-btn
+                      :disabled="btnDisabled"
+                      :to="{name: 'home'}"
+                      @click="registration"
+                    >
+                        Зарегистрироваться
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
     </v-form>
 </template>
 
@@ -59,12 +68,52 @@
                     lastName: '',
                     email: '',
                     password: ''
+                },
+                rules: {
+                    errorName: [
+                        v => !!v || 'Введите Имя',
+                        v => {
+                            const pattern = this.$store.state.person.validNameReg;
+                            return pattern.test(v) || 'Имя может содержать только буквы';
+                        }
+                    ],
+                    errorLastName: [
+                        v => !!v || 'Введите Фамилию',
+                        v => {
+                            const pattern = this.$store.state.person.validNameReg;
+                            return pattern.test(v) || 'Фамилия может содержать только буквы';
+                        }
+                    ],
+                    errorEmail: [
+                        v => !!v || 'Введите почту',
+                        v => {
+                            const pattern = this.$store.state.person.validEmailReg;
+                            return pattern.test(v) || 'Почта введена неверно';
+                        }
+                    ],
+                    errorPassword: [
+                        v => !!v || 'Введите пароль',
+                        v => {
+                            const pattern = this.$store.state.person.validPasswordReg;
+                            return pattern.test(v) || 'Пароль должен содержать не менее 8 символов, хотя бы одну заглавую и строчную буквы, цифру и спец символ #?!@$%^&*-';
+                        }
+                    ]
                 }
             }
         },
+        computed: {
+            btnDisabled() {
+                for (let key in this.person) {
+                    if (!this.person[key]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
         methods: {
-            authenti() {
-                this.$store.commit('addPerson', this.person)
+            registration() {
+                this.$store.commit('person/addPerson', this.person)
             }
         },
     }
