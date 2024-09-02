@@ -12,6 +12,10 @@
                     <h2>{{ item.title }}</h2>
                     <v-row class="text-start mt-11">{{item.text}}</v-row>
                 </v-col>
+                <v-btn @click="clickBtn(item.id)">Комментарии</v-btn>
+                <v-container v-if="item.showComments">
+                    <v-btn>еще</v-btn>
+                </v-container>
             </v-row>
         </v-container>
     </div>
@@ -21,9 +25,17 @@
     export default {
         computed: {
             news() {
-                this.$store.getters['news/getSortNews'];
+                for (let i in this.$store.state.news.news) {
+                    console.log(i)
+                }
                 return this.$store.state.news.news;
             }
-        }
+        },
+        methods: {
+            clickBtn(id) {
+                this.$store.commit('news/showComments', id);
+                this.$store.dispatch('news/getCommentsFromServer', id);
+            }
+        },
     }
 </script>
