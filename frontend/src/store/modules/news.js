@@ -33,7 +33,7 @@ export default {
               .then(responseJson => commit('addNews', responseJson));
         },
         getCommentsFromServer({sommit}, id) {
-            fetch($`http://localhost:8080/news/{id}/comments`)
+            fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', responseJson));
         }
