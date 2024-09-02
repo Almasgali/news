@@ -113,7 +113,7 @@
         },
         methods: {
             registration() {
-                this.$store.commit('person/addPerson', this.person)
+                this.$store.commit('person/addPerson', this.person);
             }
         },
     }

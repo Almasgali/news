@@ -1,28 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        news: [
-            {
-                id: 767634786,
-                date: "12.02.2005",
-                title: "News 1",
-                img: "https://avatars.mds.yandex.net/i?id=905ddc4ffc1ff628b779c9b2661afa02_l-5312449-images-thumbs&n=13",
-                text: `rterterterteyhrtyrtyrty ryuityerur rtueyruyeruitu
-                rty ueirryitryeeuriiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiity ufdh idf goyogiuyrytyreuiyiriteirterutyr`
-            },
-            {
-                id: 6342433,
-                title: "News 2",
-                date: "12.02.2012",
-                img: "https://avatars.mds.yandex.net/i?id=905ddc4ffc1ff628b779c9b2661afa02_l-5312449-images-thumbs&n=13",
-                text: `dfguiegyuerue ureytuiyeruigyreig;vhqdsufoguoreu uruyeruygfh
-                tyrtyrtyrtyvbngrtyhujys
-                yhjsyhkjhkjhfg
-                rththhrjthg;j
-                dgjfjgdjgjdf\n
-                er uutierytuyrit`
-            }
-        ]
+        news: []
     },
     getters: {
         getSortNews: (state) => {
@@ -32,6 +11,17 @@ export default {
                 return bDate - aDate;
             });
         }
+    },
+    mutations: {
+        addNews: (state, data) => {
+            state.news = data;
+        }
+    },
+    actions: {
+        getNewsFromServer ({commit}) {
+            let response = await fetch('http://localhost:8080/news');
+            let news = await response.json();
+            commit('addNews', news);
+        }
     }
 }
-  

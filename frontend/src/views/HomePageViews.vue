@@ -13,6 +13,9 @@
     components: {
       AppBar,
       NewsArticle
-    }
+    },
+    mounted() {
+      this.$store.dispatch('news/getNewsFromServer');
+    },
   }
 </script>
