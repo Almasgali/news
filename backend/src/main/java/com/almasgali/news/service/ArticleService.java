@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,7 +35,9 @@ public class ArticleService {
 
     public List<Article> getLatestNews() {
         LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
-        return articleRepository.findAllWithDateAfter(oneDayAgo);
+        List<Article> latestNews = articleRepository.findAllWithDateAfter(oneDayAgo);
+        latestNews.sort(Comparator.comparing(Article::getDate));
+        return latestNews;
     }
 
     public List<User> getLikedUsers(long articleId) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -21,15 +22,18 @@ import java.util.Set;
 @Table(name = "article", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_seq")
     @SequenceGenerator(name = "article_seq", sequenceName = "article_seq", initialValue = 7)
+    @Getter
     private long id;
+    @Getter
     private String title;
+    @Getter
     private String text;
+    @Getter
     private LocalDateTime date;
     @OneToMany(mappedBy = "article")
     @JsonIgnore

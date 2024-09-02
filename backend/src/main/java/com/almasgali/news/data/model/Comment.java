@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -23,14 +24,15 @@ import java.time.LocalDateTime;
 @Table(name = "comment", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
     @SequenceGenerator(name = "comment_seq", sequenceName = "comment_seq", initialValue = 7)
+    @Getter
     private long id;
     @Size(max = 1000, min = 1, message = "Comment length should be in interval 1-1000.")
+    @Getter
     private String text;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
