@@ -32,8 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .antMatchers(HttpMethod.PATCH, "/news/*/likes*").authenticated()
                         .antMatchers(HttpMethod.PATCH, "/news/*/comments*").authenticated()
-                        .anyRequest()
-                        .permitAll())
+                        .anyRequest().permitAll())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

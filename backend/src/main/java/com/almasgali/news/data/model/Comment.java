@@ -1,6 +1,11 @@
 package com.almasgali.news.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,11 +41,15 @@ public class Comment {
     private String text;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("userId")
+    @Getter
     private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("articleId")
+    @Getter
     private Article article;
     private LocalDateTime date;
 }
