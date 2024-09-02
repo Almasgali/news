@@ -19,9 +19,9 @@ export default {
     },
     actions: {
         getNewsFromServer ({commit}) {
-            let response = await fetch('http://localhost:8080/news');
-            let news = await response.json();
-            commit('addNews', news);
+            fetch('http://localhost:8080/news').then(response => commit('addNews', response.json()));
+            // let news = async response.json();
+            // commit('addNews', news);
         }
     }
 }
