@@ -5,6 +5,7 @@ export default {
     },
     getters: {
         getSortNews: (state) => {
+            console.log(state.news);
             return state.news;
         }
     },
