@@ -4,12 +4,12 @@ insert into "user" (id, name, surname, email, password) values
     (3, 'c', 'c', 'c@mail.com', 'cccccccc') on conflict do nothing;
 
 insert into "article" (id, title, text, date) values
-    (1, 'A', 'abacaba', '2024-08-19 00:01:00'),
+    (1, 'A', 'abacaba', now()),
     (2, 'B', 'bbacaba', '2024-08-18 00:02:00'),
-    (3, 'C', 'cbacaba', '2024-08-19 00:03:00'),
-    (4, 'D', 'dbacaba', '2024-08-19 00:04:00'),
+    (3, 'C', 'cbacaba', now()),
+    (4, 'D', 'dbacaba', now()),
     (5, 'E', 'ebacaba', '2024-08-17 00:05:00'),
-    (6, 'F', 'fbacaba', '2024-08-19 00:06:00') on conflict do nothing;
+    (6, 'F', 'fbacaba', now()) on conflict do nothing;
 
 insert into "comment" (id, text, user_id, article_id, date) values
     (1, 'A', 1, 1, '2024-08-19 00:01:00'),
