@@ -5,11 +5,7 @@ export default {
     },
     getters: {
         getSortNews: (state) => {
-            return state.news.sort((a, b) => {
-                let aDate = new Date(a.date);
-                let bDate = new Date(b.date);
-                return bDate - aDate;
-            });
+            return state.news;
         }
     },
     mutations: {
