@@ -26,3 +26,15 @@ insert into "article_like" (user_id, article_id) values
     (2, 1),
     (2, 5),
     (3, 6) on conflict do nothing;
+
+DROP SEQUENCE IF EXISTS user_seq;
+CREATE SEQUENCE user_seq START 4;
+ALTER TABLE "user" ALTER COLUMN id SET DEFAULT nextval('user_seq');
+
+DROP SEQUENCE IF EXISTS article_seq;
+CREATE SEQUENCE article_seq START 7;
+ALTER TABLE "article" ALTER COLUMN id SET DEFAULT nextval('article_seq');
+
+DROP SEQUENCE IF EXISTS comment_seq;
+CREATE SEQUENCE comment_seq START 7;
+ALTER TABLE "comment" ALTER COLUMN id SET DEFAULT nextval('comment_seq');
