@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,8 +34,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
-    @SequenceGenerator(name = "comment_seq", sequenceName = "comment_seq", initialValue = 7)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private long id;
     @Size(max = 1000, min = 1, message = "Comment length should be in interval 1-1000.")

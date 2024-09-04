@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,8 +30,7 @@ import java.util.Set;
 @Builder
 public class Article {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_seq")
-    @SequenceGenerator(name = "article_seq", sequenceName = "article_seq", initialValue = 7)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private long id;
     @Getter
