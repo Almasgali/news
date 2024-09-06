@@ -13,6 +13,7 @@ export default {
             state.news = data;
             for (let i in state.news) {
                 state.news[i].showComments = false;
+                state.news[i].showFullText = false;
             }
         },
         addComments: (state, data) => {
@@ -22,6 +23,13 @@ export default {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
                     state.news[i].showComments = true;
+                }
+            }
+        },
+        showFullText: (state, id) => {
+            for (let i in state.news) {
+                if (state.news[i].id === id) {
+                    state.news[i].showFullText = !state.news[i].showFullText;
                 }
             }
         }

@@ -15,18 +15,27 @@
                     <h2>
                         {{ item.title }}
                     </h2>
-                    <v-row class="text-start mt-11">
-                        {{item.text}}
+                    <v-row class="text-start mt-8">
+                        <div :class="{'clamped-text': !item.showFullText}">
+                            {{ item.text }}
+                        </div>
+                        <!-- <span
+                          class="d-inline-block text-truncate"
+                          style="max-height: 146px; max-width: 750px;"
+                        >
+                            {{ item.text }}
+                        </span> -->
                     </v-row>
                     <v-container>
                         <v-row>
-                            <v-col>
+                            <v-col class="text-body-1" cols="4">
                                 Опубликовано {{ item.date }}
                             </v-col>
                             <v-col>
                                 <v-btn
                                   @click="showComments(item.id)"
                                   variant="text"
+                                  class="text-caption"
                                 >
                                     Комментарии
                                 </v-btn>
@@ -34,7 +43,7 @@
                             <v-col>
                                 <v-btn
                                   variant="text"
-                                  
+                                  class="text-caption"
                                 >
                                     like
                                 </v-btn>
@@ -42,8 +51,10 @@
                             <v-col>
                                 <v-btn
                                   variant="text"
+                                  class="text-caption"
+                                  @click="showMoreText(item.id)"
                                 >
-                                    Показать больше
+                                    {{ !item.showFullText ? 'Показать больше' : 'Показать меньше' }}
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -64,6 +75,7 @@
                     </v-row>
                     <v-btn
                       variant="text"
+                      class="text-caption"
                       @click="addComments(item.id)"
                     >
                         ещё комментарии
@@ -91,7 +103,19 @@
             },
             addComments(id) {
                 this.$store.dispatch('news/loadCommentsFromServer', id);
+            },
+            showMoreText(id) {
+                this.$store.commit('news/showFullText', id);
             }
         },
     }
 </script>
+
+<style scoped>
+.clamped-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Ограничить текст тремя строками */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
