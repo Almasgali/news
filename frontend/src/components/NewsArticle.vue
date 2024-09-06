@@ -116,10 +116,10 @@
 </script>
 
 <style scoped>
-.clamped-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 5; /* Ограничить текст тремя строками */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    .clamped-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    }
 </style>
