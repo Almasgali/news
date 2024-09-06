@@ -26,7 +26,7 @@
     },
     computed: {
       name() {
-        let name = this.$store.getters['person/getName'].trim();
+        let name = this.$store.getters['person/getFullName'].trim();
         if (name !== '') {
           this.show = true;
         }

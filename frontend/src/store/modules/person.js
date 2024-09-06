@@ -12,7 +12,7 @@ export default {
     validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/
   },
   getters: {
-    getName: state => {
+    getFullName: state => {
       return state.person.name + ' ' + state.person.lastName;
     }
   },

@@ -6,7 +6,12 @@ export default {
         likes: []
     },
     getters: {
-        
+        getCountComments: (state) => {
+            return state.comments.length;
+        },
+        getCountLikes: (state) => {
+            return state.likes.length;
+        }
     },
     mutations: {
         addNews: (state, data) => {
@@ -14,6 +19,13 @@ export default {
             for (let i in state.news) {
                 state.news[i].showComments = false;
                 state.news[i].showFullText = false;
+            }
+        },
+        showFullText: (state, id) => {
+            for (let i in state.news) {
+                if (state.news[i].id === id) {
+                    state.news[i].showFullText = !state.news[i].showFullText;
+                }
             }
         },
         addComments: (state, data) => {
@@ -26,12 +38,8 @@ export default {
                 }
             }
         },
-        showFullText: (state, id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id) {
-                    state.news[i].showFullText = !state.news[i].showFullText;
-                }
-            }
+        addLikes: (state, data) => {
+            state.likes = data;
         }
     },
     actions: {
@@ -44,6 +52,11 @@ export default {
             fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', responseJson));
+        },
+        loadLikesFromServer({commit}, id) {
+            fetch(`http://localhost:8080/news/${id}/likes`)
+              .then(response => response.json())
+              .then(responseJson => commit('addLikes', responseJson));
         }
     }
 }

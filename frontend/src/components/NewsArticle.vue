@@ -45,7 +45,7 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    like
+                                    like {{ countLikes(item.id) }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -106,6 +106,10 @@
             },
             showMoreText(id) {
                 this.$store.commit('news/showFullText', id);
+            },
+            countLikes(id) {
+                this.$store.dispatch('news/loadLikesFromServer', id);
+                return this.$store.getters['news/getCountLikes'];
             }
         },
     }
