@@ -15,7 +15,7 @@
       NewsArticle
     },
     mounted() {
-      this.$store.dispatch('news/getNewsFromServer');
+      this.$store.dispatch('news/loadNewsFromServer');
     },
   }
 </script>

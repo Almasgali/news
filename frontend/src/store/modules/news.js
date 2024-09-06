@@ -2,7 +2,8 @@ export default {
     namespaced: true,
     state: {
         news: [],
-        comments: []
+        comments: [],
+        likes: []
     },
     getters: {
         
@@ -16,7 +17,6 @@ export default {
         },
         addComments: (state, data) => {
             state.comments = data;
-            console.log(state.comments);
         },
         showComments: (state, id) => {
             for (let i in state.news) {
@@ -27,12 +27,12 @@ export default {
         }
     },
     actions: {
-        getNewsFromServer ({commit}) {
+        loadNewsFromServer ({commit}) {
             fetch('http://localhost:8080/news')
               .then(response => response.json())
               .then(responseJson => commit('addNews', responseJson));
         },
-        getCommentsFromServer({commit}, id) {
+        loadCommentsFromServer({commit}, id) {
             fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', responseJson));

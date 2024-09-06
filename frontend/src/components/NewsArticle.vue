@@ -6,15 +6,68 @@
         >
             <v-row>
                 <v-col cols="4">
-                    <img :width="300" :src="item.img">
+                    <img
+                      :width="300"
+                      :src="item.img"
+                    >
                 </v-col>
                 <v-col>
-                    <h2>{{ item.title }}</h2>
-                    <v-row class="text-start mt-11">{{item.text}}</v-row>
+                    <h2>
+                        {{ item.title }}
+                    </h2>
+                    <v-row class="text-start mt-11">
+                        {{item.text}}
+                    </v-row>
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                Опубликовано {{ item.date }}
+                            </v-col>
+                            <v-col>
+                                <v-btn
+                                  @click="showComments(item.id)"
+                                  variant="text"
+                                >
+                                    Комментарии
+                                </v-btn>
+                            </v-col>
+                            <v-col>
+                                <v-btn
+                                  variant="text"
+                                  
+                                >
+                                    like
+                                </v-btn>
+                            </v-col>
+                            <v-col>
+                                <v-btn
+                                  variant="text"
+                                >
+                                    Показать больше
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-col>
-                <v-btn @click="clickBtn(item.id)">Комментарии</v-btn>
                 <v-container v-if="item.showComments">
-                    <v-btn>еще</v-btn>
+                    <v-row
+                      v-for="comment in comments"
+                      :key="comment.id"
+                    >
+                        <p>{{ comment.text }}</p>
+                        <v-col>
+                            {{  }}
+                        </v-col>
+                        <v-col>
+                            {{ comment.date }}
+                        </v-col>
+                    </v-row>
+                    <v-btn
+                      variant="text"
+                      @click="addComments(item.id)"
+                    >
+                        ещё комментарии
+                    </v-btn>
                 </v-container>
             </v-row>
         </v-container>
@@ -25,16 +78,19 @@
     export default {
         computed: {
             news() {
-                for (let i in this.$store.state.news.news) {
-                    console.log(i)
-                }
                 return this.$store.state.news.news;
+            },
+            comments() {
+                return this.$store.state.news.comments;
             }
         },
         methods: {
-            clickBtn(id) {
+            showComments(id) {
                 this.$store.commit('news/showComments', id);
-                this.$store.dispatch('news/getCommentsFromServer', id);
+                this.$store.dispatch('news/loadCommentsFromServer', id);
+            },
+            addComments(id) {
+                this.$store.dispatch('news/loadCommentsFromServer', id);
             }
         },
     }
