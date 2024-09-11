@@ -9,7 +9,7 @@ insert into "article" (id, title, text, date) values
     (3, 'C', 'cbacaba', now()),
     (4, 'D', 'dbacaba', now()),
     (5, 'E', 'ebacaba', '2024-08-17 00:05:00'),
-    (6, 'F', 'fbacaba', now()) on conflict do nothing;
+    (6, 'F', 'fbacaba', now()) on conflict(id) do update set date = EXCLUDED.date;
 
 insert into "comment" (id, text, user_id, article_id, date) values
     (1, 'A', 1, 1, '2024-08-19 00:01:00'),
@@ -27,14 +27,14 @@ insert into "article_like" (user_id, article_id) values
     (2, 5),
     (3, 6) on conflict do nothing;
 
-DROP SEQUENCE IF EXISTS user_seq;
-CREATE SEQUENCE user_seq START 4;
+--DROP SEQUENCE IF EXISTS user_seq on conflict do nothing;
+CREATE SEQUENCE IF NOT EXISTS user_seq START 4;
 ALTER TABLE "user" ALTER COLUMN id SET DEFAULT nextval('user_seq');
 
-DROP SEQUENCE IF EXISTS article_seq;
-CREATE SEQUENCE article_seq START 7;
+--DROP SEQUENCE IF EXISTS article_seq;
+CREATE SEQUENCE IF NOT EXISTS article_seq START 7;
 ALTER TABLE "article" ALTER COLUMN id SET DEFAULT nextval('article_seq');
 
-DROP SEQUENCE IF EXISTS comment_seq;
-CREATE SEQUENCE comment_seq START 7;
+--DROP SEQUENCE IF EXISTS comment_seq;
+CREATE SEQUENCE IF NOT EXISTS comment_seq START 7;
 ALTER TABLE "comment" ALTER COLUMN id SET DEFAULT nextval('comment_seq');
