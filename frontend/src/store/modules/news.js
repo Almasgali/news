@@ -1,21 +1,22 @@
 export default {
     namespaced: true,
     state: {
-        news: [],
-        comments: [],
-        likes: []
+        news: []
     },
     getters: {
-        getCountComments: (state) => {
-            return state.comments.length;
-        },
-        getCountLikes: (state) => {
-            return state.likes.length;
+        getCountLikes: (state) => (id) => {
+            for (let i in state.news) {
+                if (state.news[i].id === id) {
+                    console.log(state.news[i].likes)
+                    return state.news[i].likes.length;
+                }
+            }
         }
     },
     mutations: {
         addNews: (state, data) => {
             state.news = data;
+            console.log(data);
             for (let i in state.news) {
                 state.news[i].showComments = false;
                 state.news[i].showFullText = false;
@@ -28,8 +29,13 @@ export default {
                 }
             }
         },
-        addComments: (state, data) => {
-            state.comments = data;
+        addComments: (state, payload) => {
+            console.log(payload.data);
+            for (let i in state.news) {
+                if (state.news[i].id === payload.id) {
+                    state.news[i].comments = payload.data;
+                }
+            }
         },
         showComments: (state, id) => {
             for (let i in state.news) {
@@ -40,8 +46,13 @@ export default {
                 }
             }
         },
-        addLikes: (state, data) => {
-            state.likes = data;
+        addLikes: (state, payload) => {
+            console.log(payload.data);
+            for (let i in state.news) {
+                if (state.news[i].id === payload.id) {
+                    state.news[i].likes = payload.data;
+                }
+            }
         }
     },
     actions: {
@@ -53,12 +64,12 @@ export default {
         loadCommentsFromServer({commit}, id) {
             fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
-              .then(responseJson => commit('addComments', responseJson));
+              .then(responseJson => commit('addComments', {id: id, data: responseJson}));
         },
         loadLikesFromServer({commit}, id) {
             fetch(`http://localhost:8080/news/${id}/likes`)
               .then(response => response.json())
-              .then(responseJson => commit('addLikes', responseJson));
+              .then(responseJson => commit('addLikes', {id: id, data: responseJson}));
         }
     }
 }

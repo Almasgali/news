@@ -19,12 +19,6 @@
                         <div :class="{'clamped-text': !item.showFullText}">
                             {{ item.text }}
                         </div>
-                        <!-- <span
-                          class="d-inline-block text-truncate"
-                          style="max-height: 146px; max-width: 750px;"
-                        >
-                            {{ item.text }}
-                        </span> -->
                     </v-row>
                     <v-container>
                         <v-row>
@@ -37,7 +31,7 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    {{ !item.showComments ? `Комментарии(${countComments})` : 'Скрыть комментарии' }}
+                                    {{ !item.showComments ? "Комментарии" : 'Скрыть комментарии' }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -62,7 +56,7 @@
                 </v-col>
                 <v-container v-if="item.showComments">
                     <v-row
-                      v-for="comment in comments"
+                      v-for="comment in item.comments"
                       :key="comment.id"
                     >
                         <p>{{ comment.text }}</p>
@@ -91,18 +85,12 @@
         computed: {
             news() {
                 return this.$store.state.news.news;
-            },
-            comments() {
-                return this.$store.state.news.comments;
-            },
-            countComments() {
-                return this.$store.getters['news/getCountComments']
             }
         },
         methods: {
             showComments(id) {
-                this.$store.commit('news/showComments', id);
                 this.$store.dispatch('news/loadCommentsFromServer', id);
+                this.$store.commit('news/showComments', id);
             },
             addComments(id) {
                 this.$store.dispatch('news/loadCommentsFromServer', id);
@@ -112,7 +100,7 @@
             },
             countLikes(id) {
                 this.$store.dispatch('news/loadLikesFromServer', id);
-                return this.$store.getters['news/getCountLikes'];
+                return this.$store.getters['news/getCountLikes'](id);
             }
         },
     }
