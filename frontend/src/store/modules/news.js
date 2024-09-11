@@ -34,7 +34,8 @@ export default {
         showComments: (state, id) => {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
-                    state.news[i].showComments = true;
+                    console.log(id);
+                    state.news[i].showComments = !state.news[i].showComments;
                 }
             }
         },

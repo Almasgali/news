@@ -37,7 +37,7 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    Комментарии
+                                    {{ !item.showComments ? 'Комментарии' : 'Скрыть комментарии' }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -106,6 +106,7 @@
             },
             showMoreText(id) {
                 this.$store.commit('news/showFullText', id);
+                console.log(id);
             },
             countLikes(id) {
                 this.$store.dispatch('news/loadLikesFromServer', id);
@@ -117,9 +118,9 @@
 
 <style scoped>
     .clamped-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 </style>
