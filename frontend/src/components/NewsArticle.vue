@@ -37,7 +37,7 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    {{ !item.showComments ? 'Комментарии' : 'Скрыть комментарии' }}
+                                    {{ !item.showComments ? `Комментарии(${countComments})` : 'Скрыть комментарии' }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -94,6 +94,9 @@
             },
             comments() {
                 return this.$store.state.news.comments;
+            },
+            countComments() {
+                return this.$store.getters['news/getCountComments']
             }
         },
         methods: {
@@ -106,7 +109,6 @@
             },
             showMoreText(id) {
                 this.$store.commit('news/showFullText', id);
-                console.log(id);
             },
             countLikes(id) {
                 this.$store.dispatch('news/loadLikesFromServer', id);
