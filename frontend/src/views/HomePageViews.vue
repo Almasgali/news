@@ -16,6 +16,10 @@
     },
     mounted() {
       this.$store.dispatch('news/loadNewsFromServer');
+      let news = this.$store.state.news.news;
+      for (let i in news) {
+         this.$store.dispatch('news/loadLikesFromServer', news[i].id);
+      }
     },
   }
 </script>

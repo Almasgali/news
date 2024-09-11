@@ -99,7 +99,6 @@
                 this.$store.commit('news/showFullText', id);
             },
             countLikes(id) {
-                this.$store.dispatch('news/loadLikesFromServer', id);
                 return this.$store.getters['news/getCountLikes'](id);
             }
         },
