@@ -95,6 +95,28 @@
                     >
                         ещё комментарии
                     </v-btn>
+                    <v-container>
+                        <v-row>
+                            <v-col
+                              cols="7"
+                              class="ml-11"
+                            >
+                                <v-textarea
+                                  label="Оставить комментарий"
+                                  variant="outlined"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn
+                                  @click="addNewComment(item.id)"
+                                >
+                                    Отправить
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-container>
             </v-row>
         </v-container>
@@ -123,6 +145,9 @@
             },
             countLikes(id) {
                 return this.$store.getters['news/getCountLikes'](id);
+            },
+            addNewComments(id) {
+                //запрос н адобавление комментария
             }
         },
     }
