@@ -15,14 +15,21 @@
                     <h2>
                         {{ item.title }}
                     </h2>
-                    <v-row class="text-start mt-8">
-                        <div :class="{'clamped-text': !item.showFullText}">
+                    <v-row
+                      class="text-start mt-8"
+                    >
+                        <div
+                          :class="{'clamped-text': !item.showFullText}"
+                        >
                             {{ item.text }}
                         </div>
                     </v-row>
                     <v-container>
                         <v-row>
-                            <v-col class="text-body-1" cols="4">
+                            <v-col
+                              class="text-body-2 pt-5"
+                              cols="4"
+                            >
                                 Опубликовано {{ item.date }}
                             </v-col>
                             <v-col>
@@ -54,16 +61,29 @@
                         </v-row>
                     </v-container>
                 </v-col>
-                <v-container v-if="item.showComments">
+                <v-container
+                  v-if="item.showComments"
+                >
                     <v-row
                       v-for="comment in item.comments"
                       :key="comment.id"
+                      class="comments pl-16"
                     >
-                        <p>{{ comment.text }}</p>
-                        <v-col>
-                            {{  }}
+                        <v-col
+                          cols="12"
+                          class="text-body-2 pb-1"
+                        >
+                            {{ comment.text }}
                         </v-col>
-                        <v-col>
+                        <v-col
+                          cols="3"
+                          class="text-caption pt-0"
+                        >
+                            {{ comment.person }}
+                        </v-col>
+                        <v-col
+                          class="text-caption pt-0"
+                        >
                             {{ comment.date }}
                         </v-col>
                     </v-row>
@@ -89,8 +109,8 @@
         },
         methods: {
             showComments(id) {
-                this.$store.dispatch('news/loadCommentsFromServer', id);
                 this.$store.commit('news/showComments', id);
+                this.$store.dispatch('news/loadCommentsFromServer', id);
             },
             addComments(id) {
                 this.$store.dispatch('news/loadCommentsFromServer', id);
@@ -108,7 +128,7 @@
 <style scoped>
     .clamped-text {
         display: -webkit-box;
-        -webkit-line-clamp: 5;
+        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }

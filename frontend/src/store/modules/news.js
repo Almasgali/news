@@ -40,7 +40,7 @@ export default {
         showComments: (state, id) => {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
-                    if (state.comments.length !== 0) {
+                    if (state.news[i].comments.length !== 0) {
                         state.news[i].showComments = !state.news[i].showComments;
                     }
                 }
