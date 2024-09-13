@@ -7,8 +7,14 @@ export default {
         getCountLikes: (state) => (id) => {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
-                    console.log(state.news[i].likes)
                     return state.news[i].likes.length;
+                }
+            }
+        },
+        getShowMoreComments: (state) => (id) => {
+            for (let i in state.news) {
+                if (state.news[i].id === id) {
+                    return state.news[i].currentPages + 1 < state.news[i].totalPages ? true : false;
                 }
             }
         }
@@ -16,7 +22,7 @@ export default {
     mutations: {
         addNews: (state, data) => {
             state.news = data;
-            console.log(data);
+            console.log("news", data);
             for (let i in state.news) {
                 state.news[i].showComments = false;
                 state.news[i].showFullText = false;
@@ -30,10 +36,20 @@ export default {
             }
         },
         addComments: (state, payload) => {
-            console.log(payload.data);
+            console.log("comments", payload.data);
             for (let i in state.news) {
                 if (state.news[i].id === payload.id) {
-                    state.news[i].comments = payload.data;
+                    if (state.news[i].comments) {
+                        state.news[i].comments.push(payload.data.comments);
+                        state.news[i].totalComments = payload.data.totalItems;
+                        state.news[i].currentPages = payload.data.currentPages;
+                        state.news[i].totalPages = payload.data.totalPages;
+                    } else {
+                        state.news[i].comments = payload.data.comments;
+                        state.news[i].totalComments = payload.data.totalItems;
+                        state.news[i].currentPages = payload.data.currentPages;
+                        state.news[i].totalPages = payload.data.totalPages;
+                    }
                 }
             }
         },
@@ -47,7 +63,7 @@ export default {
             }
         },
         addLikes: (state, payload) => {
-            console.log(payload.data);
+            console.log("likes", payload.data);
             for (let i in state.news) {
                 if (state.news[i].id === payload.id) {
                     state.news[i].likes = payload.data;

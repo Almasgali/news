@@ -38,7 +38,7 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    {{ !item.showComments ? "Комментарии" : 'Скрыть комментарии' }}
+                                    {{ !item.showComments ? `Комментарии (${item.totalComments})` : 'Скрыть комментарии' }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -88,6 +88,7 @@
                         </v-col>
                     </v-row>
                     <v-btn
+                      v-if="showBtnMoreComments(item.id)"
                       variant="text"
                       class="text-caption"
                       @click="addComments(item.id)"
@@ -110,7 +111,9 @@
         methods: {
             showComments(id) {
                 this.$store.commit('news/showComments', id);
-                this.$store.dispatch('news/loadCommentsFromServer', id);
+            },
+            showBtnMoreComments(id) {
+                return this.$store.getters['news/getShowMoreComments'](id);
             },
             addComments(id) {
                 this.$store.dispatch('news/loadCommentsFromServer', id);
