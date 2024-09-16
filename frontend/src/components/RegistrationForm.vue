@@ -48,7 +48,7 @@
                 <v-col>
                     <v-btn
                       :disabled="btnDisabled"
-                      :to="{name: 'home'}"
+                      :to="{name: 'message'}"
                       @click="registration"
                     >
                         Зарегистрироваться
@@ -114,6 +114,7 @@
         methods: {
             registration() {
                 this.$store.commit('person/addPerson', this.person);
+                this.$store.dispatch('person/sendRegInfoToServer', this.person);
             }
         },
     }
