@@ -17,8 +17,8 @@
                 </v-col>
                 <v-col>
                     <v-text-field
-                      v-model="person.lastName"
-                      :rules="rules.errorLastName"
+                      v-model="person.surname"
+                      :rules="rules.errorSurname"
                       type="text" 
                       label="Фамилия"
                     />
@@ -65,7 +65,7 @@
             return {
                 person: {
                     name: '',
-                    lastName: '',
+                    surName: '',
                     email: '',
                     password: ''
                 },
@@ -77,7 +77,7 @@
                             return pattern.test(v) || 'Имя может содержать только буквы';
                         }
                     ],
-                    errorLastName: [
+                    errorSurname: [
                         v => !!v || 'Введите Фамилию',
                         v => {
                             const pattern = this.$store.state.person.validNameReg;

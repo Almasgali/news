@@ -3,7 +3,7 @@ export default {
   state: {
     person: {
       name: '',
-      lastName: '',
+      surname: '',
       email: '',
       password: ''
     },
@@ -14,20 +14,20 @@ export default {
   },
   getters: {
     getFullName: state => {
-      return state.person.name + ' ' + state.person.lastName;
+      return state.person.name + ' ' + state.person.surname;
     }
   },
   mutations: {
     addPerson: (state, data) => {
       state.person.name = data.name;
-      state.person.lastName = data.lastName;
+      state.person.surname = data.surname;
       state.person.email = data.email;
       state.person.password = data.password;
     },
     delPerson: (state) => {
       state.person = {
         name: '',
-        lastName: '',
+        surname: '',
         email: '',
         password: ''
       }
