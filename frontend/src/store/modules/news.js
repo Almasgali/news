@@ -4,9 +4,23 @@ export default {
         news: []
     },
     getters: {
-        getCountLikes: (state) => (id) => {
+        getDateTime: (state) => (id) => {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
+                    let date = new Date(state.news[i].date);
+                    let res = '';
+                    res += `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}.`;
+                    res += `${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}.`;
+                    res += `${date.getFullYear()} `;
+                    res += `${date.getHours()}:`;
+                    res += `${date.getMinutes()}`;
+                    return res;
+                }
+            }
+        },
+        getCountLikes: (state) => (id) => {
+            for (let i in state.news) {
+                if (state.news[i].id === id && state.news[i].likes) {
                     return state.news[i].likes.length;
                 }
             }
@@ -14,7 +28,9 @@ export default {
         getShowMoreComments: (state) => (id) => {
             for (let i in state.news) {
                 if (state.news[i].id === id) {
-                    return state.news[i].currentPages + 1 < state.news[i].totalPages ? true : false;
+                    console.log(state.news[i].currentPage);
+                    console.log(state.news[i].totalPages);
+                    return state.news[i].currentPage + 1 < state.news[i].totalPages ? true : false;
                 }
             }
         }
@@ -22,11 +38,11 @@ export default {
     mutations: {
         addNews: (state, data) => {
             state.news = data;
-            console.log("news", data);
             for (let i in state.news) {
                 state.news[i].showComments = false;
                 state.news[i].showFullText = false;
             }
+            // console.log("news", state.news);
         },
         showFullText: (state, id) => {
             for (let i in state.news) {
@@ -36,22 +52,26 @@ export default {
             }
         },
         addComments: (state, payload) => {
-            console.log("comments", payload.data);
+            // console.log(payload.id);
+            // console.log("comments", payload.data.comments);
             for (let i in state.news) {
                 if (state.news[i].id === payload.id) {
                     if (state.news[i].comments) {
-                        state.news[i].comments.push(payload.data.comments);
+                        for (let j in payload.data.comments) {
+                            state.news[i].comments.push(payload.data.comments[i]);
+                        }
                         state.news[i].totalComments = payload.data.totalItems;
-                        state.news[i].currentPages = payload.data.currentPages;
+                        state.news[i].currentPage = payload.data.currentPage;
                         state.news[i].totalPages = payload.data.totalPages;
                     } else {
                         state.news[i].comments = payload.data.comments;
                         state.news[i].totalComments = payload.data.totalItems;
-                        state.news[i].currentPages = payload.data.currentPages;
+                        state.news[i].currentPage = payload.data.currentPage;
                         state.news[i].totalPages = payload.data.totalPages;
                     }
                 }
             }
+            // console.log("add comm", state.news);
         },
         showComments: (state, id) => {
             for (let i in state.news) {
@@ -63,12 +83,14 @@ export default {
             }
         },
         addLikes: (state, payload) => {
-            console.log("likes", payload.data);
+            // console.log(payload.id);
+            // console.log("likes", payload.data);
             for (let i in state.news) {
                 if (state.news[i].id === payload.id) {
                     state.news[i].likes = payload.data;
                 }
             }
+            // console.log("add likes", state.news);
         }
     },
     actions: {
@@ -79,6 +101,12 @@ export default {
         },
         loadCommentsFromServer({commit}, id) {
             fetch(`http://localhost:8080/news/${id}/comments`)
+              .then(response => response.json())
+              .then(responseJson => commit('addComments', {id: id, data: responseJson}));
+        },
+        loadMoreCommentsFromServer({state, commit}, id) {
+            let currentPage = state.news.find(item => item.id === id).currentPage + 1;
+            fetch(`http://localhost:8080/news/${id}/comments?page=${currentPage}`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', {id: id, data: responseJson}));
         },

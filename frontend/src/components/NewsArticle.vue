@@ -30,7 +30,7 @@
                               class="text-body-2 pt-5"
                               cols="4"
                             >
-                                Опубликовано {{ item.date }}
+                                Опубликовано {{ getDateTime(item.id) }}
                             </v-col>
                             <v-col>
                                 <v-btn
@@ -91,11 +91,11 @@
                       v-if="showBtnMoreComments(item.id)"
                       variant="text"
                       class="text-caption"
-                      @click="addComments(item.id)"
+                      @click="addComments(item.id, item.currentPage)"
                     >
                         ещё комментарии
                     </v-btn>
-                    <v-container>
+                    <!-- <v-container>
                         <v-row>
                             <v-col
                               cols="7"
@@ -116,7 +116,7 @@
                                 </v-btn>
                             </v-col>
                         </v-row>
-                    </v-container>
+                    </v-container> -->
                 </v-container>
             </v-row>
         </v-container>
@@ -137,19 +137,29 @@
             showBtnMoreComments(id) {
                 return this.$store.getters['news/getShowMoreComments'](id);
             },
-            addComments(id) {
-                this.$store.dispatch('news/loadCommentsFromServer', id);
+            addComments(id, currentPage) {
+                this.$store.dispatch('news/loadMoreCommentsFromServer', id, currentPage + 1);
             },
             showMoreText(id) {
                 this.$store.commit('news/showFullText', id);
             },
+            getDateTime(id) {
+                return this.$store.getters['news/getDateTime'](id);
+            },
             countLikes(id) {
                 return this.$store.getters['news/getCountLikes'](id);
-            },
-            addNewComments(id) {
-                //запрос н адобавление комментария
             }
         },
+        created() {
+            this.$store.dispatch('news/loadNewsFromServer');
+        },
+        updated() {
+            let news = this.$store.state.news.news;
+            for (let i in news) {
+                this.$store.dispatch('news/loadLikesFromServer', news[i].id);
+                this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
+            }
+        }
     }
 </script>
 
