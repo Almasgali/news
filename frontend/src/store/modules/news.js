@@ -5,34 +5,24 @@ export default {
     },
     getters: {
         getDateTime: (state) => (id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id) {
-                    let date = new Date(state.news[i].date);
-                    let res = '';
-                    res += `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}.`;
-                    res += `${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}.`;
-                    res += `${date.getFullYear()} `;
-                    res += `${date.getHours()}:`;
-                    res += `${date.getMinutes()}`;
-                    return res;
-                }
-            }
+            let date = new Date(state.news.find(item => item.id === id).date);
+            let res = '';
+            res += `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}.`;
+            res += `${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}.`;
+            res += `${date.getFullYear()} `;
+            res += `${date.getHours()}:`;
+            res += `${date.getMinutes()}`;
+            return res;
         },
         getCountLikes: (state) => (id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id && state.news[i].likes) {
-                    return state.news[i].likes.length;
-                }
+            if (state.news.find(item => item.id === id).likes) {
+                return state.news.find(item => item.id === id).likes.length;
             }
         },
         getShowMoreComments: (state) => (id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id) {
-                    console.log(state.news[i].currentPage);
-                    console.log(state.news[i].totalPages);
-                    return state.news[i].currentPage + 1 < state.news[i].totalPages ? true : false;
-                }
-            }
+            let currentPage = state.news.find(item => item.id === id).currentPage;
+            let totalPages = state.news.find(item => item.id === id).totalPages;
+            return currentPage + 1 < totalPages ? true : false;
         }
     },
     mutations: {
@@ -42,55 +32,28 @@ export default {
                 state.news[i].showComments = false;
                 state.news[i].showFullText = false;
             }
-            // console.log("news", state.news);
         },
         showFullText: (state, id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id) {
-                    state.news[i].showFullText = !state.news[i].showFullText;
-                }
-            }
+            let val = state.news.find(item => item.id === id).showFullText;
+            state.news.find(item => item.id === id).showFullText = !val;
         },
         addComments: (state, payload) => {
-            // console.log(payload.id);
-            // console.log("comments", payload.data.comments);
-            for (let i in state.news) {
-                if (state.news[i].id === payload.id) {
-                    if (state.news[i].comments) {
-                        for (let j in payload.data.comments) {
-                            state.news[i].comments.push(payload.data.comments[i]);
-                        }
-                        state.news[i].totalComments = payload.data.totalItems;
-                        state.news[i].currentPage = payload.data.currentPage;
-                        state.news[i].totalPages = payload.data.totalPages;
-                    } else {
-                        state.news[i].comments = payload.data.comments;
-                        state.news[i].totalComments = payload.data.totalItems;
-                        state.news[i].currentPage = payload.data.currentPage;
-                        state.news[i].totalPages = payload.data.totalPages;
-                    }
-                }
+            if (!state.news.find(item => item.id === payload.id).comments) {
+                state.news.find(item => item.id === payload.id).comments = [];
             }
-            // console.log("add comm", state.news);
+            for (let i in payload.data.comments) {
+                state.news.find(item => item.id === payload.id).comments.push(payload.data.comments[i]);
+            }
+            state.news.find(item => item.id === payload.id).totalComments = payload.data.totalItems;
+            state.news.find(item => item.id === payload.id).currentPage = payload.data.currentPage;
+            state.news.find(item => item.id === payload.id).totalPages = payload.data.totalPages;
         },
         showComments: (state, id) => {
-            for (let i in state.news) {
-                if (state.news[i].id === id) {
-                    if (state.news[i].comments.length !== 0) {
-                        state.news[i].showComments = !state.news[i].showComments;
-                    }
-                }
-            }
+            let val = state.news.find(item => item.id === id).showComments;
+            state.news.find(item => item.id === id).showComments = !val;
         },
         addLikes: (state, payload) => {
-            // console.log(payload.id);
-            // console.log("likes", payload.data);
-            for (let i in state.news) {
-                if (state.news[i].id === payload.id) {
-                    state.news[i].likes = payload.data;
-                }
-            }
-            // console.log("add likes", state.news);
+            state.news.find(item => item.id === payload.id).likes = payload.data;
         }
     },
     actions: {

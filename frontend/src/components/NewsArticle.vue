@@ -37,6 +37,7 @@
                                   @click="showComments(item.id)"
                                   variant="text"
                                   class="text-caption"
+                                  :disabled="showCommentsDisabled(item.totalComments)"
                                 >
                                     {{ !item.showComments ? `Комментарии (${item.totalComments})` : 'Скрыть комментарии' }}
                                 </v-btn>
@@ -148,6 +149,9 @@
             },
             countLikes(id) {
                 return this.$store.getters['news/getCountLikes'](id);
+            },
+            showCommentsDisabled(count) {
+                return count === 0 ? true : false;
             }
         },
         created() {
