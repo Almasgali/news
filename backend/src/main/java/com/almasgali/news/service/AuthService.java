@@ -5,7 +5,6 @@ import com.almasgali.news.data.dto.RegisterRequest;
 import com.almasgali.news.data.model.User;
 import com.almasgali.news.exception.auth.UserAlreadyExistsException;
 import com.almasgali.news.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

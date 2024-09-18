@@ -1,10 +1,6 @@
 package com.almasgali.news.repository;
 
 import com.almasgali.news.data.model.Article;
-import com.almasgali.news.data.model.Comment;
-import com.almasgali.news.data.model.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
