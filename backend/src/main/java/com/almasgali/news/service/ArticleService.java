@@ -2,6 +2,7 @@ package com.almasgali.news.service;
 
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
+import com.almasgali.news.data.dto.CommentsResponse;
 import com.almasgali.news.data.model.Article;
 import com.almasgali.news.data.model.Comment;
 import com.almasgali.news.data.model.User;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -74,11 +76,22 @@ public class ArticleService {
         userRepository.save(user);
     }
 
-    public CommentResponse getComments(long articleId, Pageable p) {
+    public CommentsResponse getComments(long articleId, Pageable p) {
         Page<Comment> pComments = commentRepository.findByArticleId(articleId, p);
         List<Comment> comments = pComments.getContent();
-        return CommentResponse.builder()
-                .comments(comments)
+
+        List<CommentResponse> responseComments = new ArrayList<>();
+        for (Comment c : comments) {
+            User author = c.getUser();
+            responseComments.add(CommentResponse.builder()
+                    .text(c.getText())
+                    .name(author.getName())
+                    .surname(author.getSurname())
+                    .date(c.getDate()).build());
+        }
+
+        return CommentsResponse.builder()
+                .comments(responseComments)
                 .currentPage(pComments.getNumber())
                 .totalItems(pComments.getTotalElements())
                 .totalPages(pComments.getTotalPages()).build();

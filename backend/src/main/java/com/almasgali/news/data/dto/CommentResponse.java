@@ -1,16 +1,15 @@
 package com.almasgali.news.data.dto;
 
-import com.almasgali.news.data.model.Comment;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class CommentResponse {
-    private List<Comment> comments;
-    private int currentPage;
-    private long totalItems;
-    private int totalPages;
+    private String text;
+    private String name;
+    private String surname;
+    private LocalDateTime date;
 }
