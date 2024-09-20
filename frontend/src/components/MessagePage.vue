@@ -3,18 +3,12 @@
       class="mx-auto pa-10"
       max-width="500px"
     >
-        <v-card-title>
-            {{ message.title }}
-        </v-card-title>
-        <v-card-subtitle>
-            {{ message.subTitle }}
-        </v-card-subtitle>
         <v-card-text>
-            {{ message.text }}
+            {{ message }}
         </v-card-text>
         <v-card-actions>
             <v-btn
-              :to="{name: message.link}"
+              :to="{name: link}"
               text="OK"
             />
         </v-card-actions>
@@ -25,14 +19,11 @@
     export default {
         computed: {
             message() {
-                let status = this.$store.state.person.message;
-                let res = {
-                    title: '',
-                    subTitle: '',
-                    text: '',
-                    link: ''
-                }
-                return res;
+                return this.$store.state.person.message;
+            },
+            link() {
+                this.$store.commit('person/delPerson');
+                return 'authentication';
             }
         }
     }

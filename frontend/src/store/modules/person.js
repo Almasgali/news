@@ -41,6 +41,7 @@ export default {
   },
   mutations: {
     addPerson: (state, data) => {
+      console.log(data);
       state.person.name = data.name;
       state.person.surname = data.surname;
       state.person.email = data.email;
@@ -52,7 +53,8 @@ export default {
         name: '',
         surname: '',
         email: '',
-        password: ''
+        password: '',
+        id: ''
       }
     },
     setPerson: (state, data) => {
@@ -63,9 +65,6 @@ export default {
       console.log(data);
       state.message = data.message;
     },
-    setUserAndMessage: (state, data) => {
-      console.log(data);
-    }
   },
   actions: {
     sendRegInfoToServer({commit}, data) {
@@ -76,7 +75,9 @@ export default {
         },
         body: JSON.stringify(data)
       })
-        .then(response => commit('setMessage', response));
+        .then(response => response.json())
+        .then(responseJson => commit('setMessage', responseJson));
+
     },
     sendAuthInfoToServer({commit}, data) {
       fetch(`http://localhost:8080/user/auth`, {
@@ -86,7 +87,9 @@ export default {
         },
         body: JSON.stringify(data)
       })
-        .then(response => commit('setUserAndMessage', response));
+        .then(response => response.json())
+        .then(responseJson => commit('setMessage', responseJson))
+        .then(responseJson => commit('addPerson', responseJson));
     }
   }
 }

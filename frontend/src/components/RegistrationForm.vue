@@ -105,8 +105,9 @@
         },
         methods: {
             registration() {
-                this.$store.commit('person/addPerson', this.person);
-                this.$store.dispatch('person/sendRegInfoToServer', this.person);
+                let person = this.person;
+                delete person[id];
+                this.$store.dispatch('person/sendRegInfoToServer', person);
             }
         },
     }

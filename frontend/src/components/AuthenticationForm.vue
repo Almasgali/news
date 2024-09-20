@@ -41,7 +41,10 @@
             </v-row>
             <v-row justify="end">
                 <v-col cols="6">
-                    <router-link :to="{name: 'registration'}">
+                    <router-link 
+                      :to="{name: 'registration'}"
+                      @click="clearPerson"
+                    >
                         Нет аккаунта? Создать
                     </router-link>
                 </v-col>
@@ -78,7 +81,14 @@
         },
         methods: {
             authentication() {
-                this.$store.commit('person/setPerson', this.person)
+                let person = {
+                    email: this.person.email,
+                    password: this.person.password
+                };
+                this.$store.dispatch('person/sendAuthInfoToServer', person);
+            },
+            clearPerson() {
+                this.$store.commit('person/delPerson');
             }
         },
     }
