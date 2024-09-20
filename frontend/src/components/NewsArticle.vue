@@ -47,7 +47,10 @@
                                   variant="text"
                                   class="text-caption"
                                 >
-                                    like {{ countLikes(item.id) }}
+                                    <v-icon>
+                                        {{ getWhatLikesBtn(person.id) }}
+                                    </v-icon>
+                                    {{ countLikes(item.id) }}
                                 </v-btn>
                             </v-col>
                             <v-col>
@@ -129,6 +132,9 @@
         computed: {
             news() {
                 return this.$store.state.news.news;
+            },
+            person() {
+                return this.$store.state.person.person;
             }
         },
         methods: {
@@ -152,6 +158,10 @@
             },
             showCommentsDisabled(count) {
                 return count === 0 ? true : false;
+            },
+            getWhatLikesBtn(id) {
+                let getCheckIdInLikes = this.$store.getters['news/getCheckIdInLikes'](id);
+                return getCheckIdInLikes ? 'mdi-heart' : 'mdi-heart-outline';
             }
         },
         created() {

@@ -5,7 +5,8 @@ export default {
       name: '',
       surname: '',
       email: '',
-      password: ''
+      password: '',
+      id: ''
     },
     message: '',
     validNameReg: /^([a-z]+|[а-яё]+)$/i,
@@ -23,6 +24,7 @@ export default {
       state.person.surname = data.surname;
       state.person.email = data.email;
       state.person.password = data.password;
+      state.person.id = data.id;
     },
     delPerson: (state) => {
       state.person = {

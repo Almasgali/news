@@ -23,6 +23,9 @@ export default {
             let currentPage = state.news.find(item => item.id === id).currentPage;
             let totalPages = state.news.find(item => item.id === id).totalPages;
             return currentPage + 1 < totalPages ? true : false;
+        },
+        getCheckIdInLikes: (state) => (id) => {
+            return state.news.find(item => item.id === id);
         }
     },
     mutations: {
