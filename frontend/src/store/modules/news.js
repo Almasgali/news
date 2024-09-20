@@ -4,14 +4,14 @@ export default {
         news: []
     },
     getters: {
-        getDateTime: (state) => (id) => {
-            let date = new Date(state.news.find(item => item.id === id).date);
+        getDateTime: (state) => (data) => {
+            let date = new Date(data);
             let res = '';
             res += `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}.`;
             res += `${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}.`;
             res += `${date.getFullYear()} `;
-            res += `${date.getHours()}:`;
-            res += `${date.getMinutes()}`;
+            res += `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:`;
+            res += `${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`;
             return res;
         },
         getCountLikes: (state) => (id) => {

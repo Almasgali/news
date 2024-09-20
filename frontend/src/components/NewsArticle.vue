@@ -8,7 +8,7 @@
                 <v-col cols="4">
                     <img
                       :width="300"
-                      :src="item.img"
+                      :src="item.image"
                     >
                 </v-col>
                 <v-col>
@@ -30,7 +30,7 @@
                               class="text-body-2 pt-5"
                               cols="4"
                             >
-                                Опубликовано {{ getDateTime(item.id) }}
+                                Опубликовано {{ getDateTime(item.date) }}
                             </v-col>
                             <v-col>
                                 <v-btn
@@ -80,12 +80,12 @@
                           cols="3"
                           class="text-caption pt-0"
                         >
-                            {{ comment.person }}
+                            {{ comment.name }} {{ comment.surname }}
                         </v-col>
                         <v-col
                           class="text-caption pt-0"
                         >
-                            {{ comment.date }}
+                            {{ getDateTime(comment.date) }}
                         </v-col>
                     </v-row>
                     <v-btn
@@ -144,8 +144,8 @@
             showMoreText(id) {
                 this.$store.commit('news/showFullText', id);
             },
-            getDateTime(id) {
-                return this.$store.getters['news/getDateTime'](id);
+            getDateTime(date) {
+                return this.$store.getters['news/getDateTime'](date);
             },
             countLikes(id) {
                 return this.$store.getters['news/getCountLikes'](id);
