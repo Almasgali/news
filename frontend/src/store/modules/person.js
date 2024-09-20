@@ -16,6 +16,27 @@ export default {
   getters: {
     getFullName: state => {
       return state.person.name + ' ' + state.person.surname;
+    },
+    getRegBtnDisabled: state => {
+      if (!state.person.name || !state.person.surname || !state.person.email || !state.person.password) {
+        return true;
+      } else {
+        if (!state.validNameReg.test(state.person.name) || !state.validNameReg.test(state.person.surname) 
+          || !state.validEmailReg.test(state.person.email) || !state.validPasswordReg.test(state.person.password)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    getAuthBtnDisabled: state => {
+      if (!state.person.email || !state.person.password) {
+        return true;
+      } else {
+        if (!state.validEmailReg.test(state.person.email)) {
+          return true;
+        }
+      }
+      return false;
     }
   },
   mutations: {
@@ -40,7 +61,7 @@ export default {
     },
     setMessage: (state, data) => {
       console.log(data);
-      state.message = data.status;
+      state.message = data.message;
     },
     setUserAndMessage: (state, data) => {
       console.log(data);

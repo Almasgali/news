@@ -32,7 +32,7 @@
                 <v-col>
                     <v-btn
                       :disabled="bntDisabled"
-                      :to="{name: 'home'}"
+                      :to="{name: 'message'}"
                       @click="authentication"
                     >
                         Войти
@@ -54,10 +54,6 @@
     export default {
         data() {
             return {
-                person: {
-                    email: '',
-                    password: ''
-                },
                 rules: {
                     errorEmail: [
                         v => !!v || 'Введите почту',
@@ -73,8 +69,11 @@
             }
         },
         computed: {
+            person() {
+                return this.$store.state.person.person;
+            },
             bntDisabled() {
-                return !this.person.email || !this.person.password;
+                return this.$store.getters['person/getAuthBtnDisabled'];
             }
         },
         methods: {

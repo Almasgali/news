@@ -63,12 +63,6 @@
     export default {
         data() {
             return {
-                person: {
-                    name: '',
-                    surName: '',
-                    email: '',
-                    password: ''
-                },
                 rules: {
                     errorName: [
                         v => !!v || 'Введите Имя',
@@ -102,13 +96,11 @@
             }
         },
         computed: {
+            person() {
+                return this.$store.state.person.person;
+            },
             btnDisabled() {
-                for (let key in this.person) {
-                    if (!this.person[key]) {
-                        return true;
-                    }
-                }
-                return false;
+                return this.$store.getters['person/getRegBtnDisabled'];
             }
         },
         methods: {
