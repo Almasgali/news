@@ -3,6 +3,7 @@ package com.almasgali.news.controller;
 import com.almasgali.news.data.dto.AuthRequest;
 import com.almasgali.news.data.dto.AuthResponse;
 import com.almasgali.news.data.dto.RegisterRequest;
+import com.almasgali.news.data.dto.RegisterResponse;
 import com.almasgali.news.data.model.User;
 import com.almasgali.news.service.AuthService;
 import com.almasgali.news.service.JwtService;
@@ -31,9 +32,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody RegisterRequest registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerUserDto) {
+        authenticationService.signup(registerUserDto);
+        RegisterResponse registerResponse = RegisterResponse.builder()
+                .message("Пользователь успешно зарегистрирован.").build();
+        return new ResponseEntity<>(registerResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/auth")
@@ -44,6 +47,7 @@ public class AuthController {
                 .id(authenticatedUser.getId())
                 .name(authenticatedUser.getName())
                 .surname(authenticatedUser.getSurname())
+                .message("Пользователь успешно авторизован.")
                 .token(jwtToken).build();
 
         return ResponseEntity.ok(loginResponse);

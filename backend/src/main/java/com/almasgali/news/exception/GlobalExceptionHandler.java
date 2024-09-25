@@ -23,13 +23,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorDetail> catchUserAlreadyExistsException(UserAlreadyExistsException e) {
         log.error(e.getMessage());
-        return ErrorDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ErrorDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Пользователь с таким email уже существует.");
     }
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<ErrorDetail> catchAuthException(AuthException e) {
         log.error(e.getMessage());
-        return ErrorDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+        return ErrorDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,"Ошибка авторизации.");
     }
 
     @ExceptionHandler(InvalidTokenException.class)
@@ -41,13 +41,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorDetail> catchUsernameNotFoundException(UsernameNotFoundException e) {
         log.error(e.getMessage());
-        return ErrorDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ErrorDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Пользователя с таким email не найдено.");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorDetail> catchBadCredentialsException(BadCredentialsException e) {
         log.error(e.getMessage());
-        return ErrorDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
+        return ErrorDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Неверные данные.");
     }
 
     @ExceptionHandler(MalformedJwtException.class)
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorDetail> catchRuntimeException(RuntimeException e) {
         log.error(e.getMessage());
-        return ErrorDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        return ErrorDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка сервера.");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
