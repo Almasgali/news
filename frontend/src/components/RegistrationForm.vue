@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { parseQuery } from 'vue-router';
+
     export default {
         data() {
             return {
@@ -106,7 +108,6 @@
         methods: {
             registration() {
                 let person = this.person;
-                delete person[id];
                 this.$store.dispatch('person/sendRegInfoToServer', person);
             }
         },

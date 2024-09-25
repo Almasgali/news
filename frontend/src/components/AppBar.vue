@@ -26,11 +26,11 @@
     },
     computed: {
       name() {
-        let name = this.$store.getters['person/getFullName'].trim();
-        if (name !== '') {
+        let name = this.$store.getters['person/getFullName'];
+        if (name !== `${undefined} ${undefined}`) {
           this.show = true;
+          return name;
         }
-        return name;
       },
     },
     methods: {

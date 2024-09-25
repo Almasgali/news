@@ -1,13 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    person: {
-      name: '',
-      surname: '',
-      email: '',
-      password: '',
-      id: ''
-    },
+    person: {},
     message: '',
     validNameReg: /^([a-z]+|[а-яё]+)$/i,
     validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
@@ -40,31 +34,24 @@ export default {
     }
   },
   mutations: {
-    addPerson: (state, data) => {
-      console.log(data);
-      state.person.name = data.name;
-      state.person.surname = data.surname;
-      state.person.email = data.email;
-      state.person.password = data.password;
-      state.person.id = data.id;
-    },
     delPerson: (state) => {
-      state.person = {
-        name: '',
-        surname: '',
-        email: '',
-        password: '',
-        id: ''
-      }
+      state.person = {}
     },
     setPerson: (state, data) => {
       state.person.email = data.email;
       state.person.password = data.password;
     },
     setMessage: (state, data) => {
-      console.log(data);
-      state.message = data.message;
-    },
+      if (data.id) {
+        state.person.id = data.id;
+        state.person.name = data.name;
+        state.person.surname = data.surname;
+        state.person.token = data.token;
+        state.message = data.message;
+      } else {
+        state.message = data.message;
+      } 
+    }
   },
   actions: {
     sendRegInfoToServer({commit}, data) {
@@ -76,7 +63,7 @@ export default {
         body: JSON.stringify(data)
       })
         .then(response => response.json())
-        .then(responseJson => commit('setMessage', responseJson));
+        .then(responseJson => commit('setMessage', responseJson))
 
     },
     sendAuthInfoToServer({commit}, data) {
@@ -89,7 +76,6 @@ export default {
       })
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
-        .then(responseJson => commit('addPerson', responseJson));
     }
   }
 }

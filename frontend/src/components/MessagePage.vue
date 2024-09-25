@@ -22,6 +22,9 @@
                 return this.$store.state.person.message;
             },
             link() {
+                if (this.message == "Вы успешно авторизованы") {
+                    return 'home';
+                }
                 this.$store.commit('person/delPerson');
                 return 'authentication';
             }
