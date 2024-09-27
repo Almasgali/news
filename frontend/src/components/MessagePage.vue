@@ -22,7 +22,7 @@
                 return this.$store.state.person.message;
             },
             link() {
-                if (this.message == "Вы успешно авторизованы") {
+                if (this.message === "Пользователь успешно авторизован.") {
                     return 'home';
                 }
                 this.$store.commit('person/delPerson');

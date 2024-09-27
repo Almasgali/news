@@ -46,9 +46,11 @@
                                 <v-btn
                                   variant="text"
                                   class="text-caption"
+                                  @click="addLike(item.id)"
+                                  :disabled="!showMoreBtn"
                                 >
                                     <v-icon>
-                                        {{ getWhatLikesBtn(person.id) }}
+                                        {{ getWhatLikesBtn(item.id, person.id) }}
                                     </v-icon>
                                     {{ countLikes(item.id) }}
                                 </v-btn>
@@ -99,7 +101,9 @@
                     >
                         ещё комментарии
                     </v-btn>
-                    <!-- <v-container>
+                    <v-container
+                      v-if="showMoreBtn"
+                    >
                         <v-row>
                             <v-col
                               cols="7"
@@ -108,6 +112,9 @@
                                 <v-textarea
                                   label="Оставить комментарий"
                                   variant="outlined"
+                                  :rules="rules"
+                                  :counter="1000"
+                                  v-model="textComment"
                                 />
                             </v-col>
                         </v-row>
@@ -115,12 +122,13 @@
                             <v-col>
                                 <v-btn
                                   @click="addNewComment(item.id)"
+                                  size="small"
                                 >
                                     Отправить
                                 </v-btn>
                             </v-col>
                         </v-row>
-                    </v-container> -->
+                    </v-container>
                 </v-container>
             </v-row>
         </v-container>
@@ -129,12 +137,24 @@
 
 <script>
     export default {
+        data() {
+            return {
+                rules: [
+                    v => !!v || 'Введите комментарий',
+                    v => (v && v.length <= 1000) || 'Максимум 1000 символов'
+                ],
+                textComment: ''
+            }
+        },
         computed: {
             news() {
                 return this.$store.state.news.news;
             },
             person() {
                 return this.$store.state.person.person;
+            },
+            showMoreBtn() {
+                return this.$store.getters['person/getBullToken'];
             }
         },
         methods: {
@@ -159,9 +179,30 @@
             showCommentsDisabled(count) {
                 return count === 0 ? true : false;
             },
-            getWhatLikesBtn(id) {
-                let getCheckIdInLikes = this.$store.getters['news/getCheckIdInLikes'](id);
+            getWhatLikesBtn(newsId, personId) {
+                let getCheckIdInLikes = this.$store.getters['news/getCheckIdInLikes']({newsId: newsId, personId: personId});
                 return getCheckIdInLikes ? 'mdi-heart' : 'mdi-heart-outline';
+            },
+            addNewComment() {
+                this.$store.dispatch('news/sendCommentToServer', {
+                    id: id,
+                    token: this.person.token,
+                    personId: this.person.id,
+                    text: this.textComment
+                });
+            },
+            addLike(id) {
+                this.$store.dispatch('news/sendLikeToServer', {
+                    id: id,
+                    token: this.person.token,
+                    person: {
+                        id: this.person.id,
+                        name: this.person.name,
+                        surname: this.person.surname
+                    }
+                });
+                console.log("load");
+                this.$store.dispatch('news/loadLikesFromServer', id);
             }
         },
         created() {

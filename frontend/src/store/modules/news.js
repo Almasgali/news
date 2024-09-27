@@ -24,8 +24,11 @@ export default {
             let totalPages = state.news.find(item => item.id === id).totalPages;
             return currentPage + 1 < totalPages ? true : false;
         },
-        getCheckIdInLikes: (state) => (id) => {
-            return state.news.find(item => item.id === id);
+        getCheckIdInLikes: (state) => (data) => {
+            let likes = state.news.find(item => item.id === data.newsId).likes;
+            if (likes) {
+                return likes.find(item => item.id === data.personId);
+            }
         }
     },
     mutations: {
@@ -56,7 +59,13 @@ export default {
             state.news.find(item => item.id === id).showComments = !val;
         },
         addLikes: (state, payload) => {
+            console.log(payload.data);
+            console.log('before', state.news.find(item => item.id === payload.id).likes)
             state.news.find(item => item.id === payload.id).likes = payload.data;
+            console.log('after', state.news.find(item => item.id === payload.id).likes)
+        },
+        addNewLike: (state, payload) => {
+            state.news.find(item => item.id === payload.id).likes.push(payload.person);
         }
     },
     actions: {
@@ -80,6 +89,27 @@ export default {
             fetch(`http://localhost:8080/news/${id}/likes`)
               .then(response => response.json())
               .then(responseJson => commit('addLikes', {id: id, data: responseJson}));
+        },
+        sendCommentToServer({commit}, data) {
+            fetch(`http://localhost:8080/news/${data.id}/comments?userId=${data.personId}`, {
+              method: 'PATCH',
+              headers: {
+                'Authorization': `Bearer ${data.token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data.text)
+            })
+        },
+        sendLikeToServer({commit}, data) {
+            fetch(`http://localhost:8080/news/${data.id}/likes?userId=${data.person.id}`, {
+                method: 'PATCH',
+                headers: {
+                'Authorization': `Bearer ${data.token}`,
+                'Content-Type': 'application/json'
+                },
+            })
+              .then(response => console.log(response))
+            // commit('addNewLike', data);
         }
     }
 }

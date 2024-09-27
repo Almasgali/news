@@ -31,11 +31,14 @@ export default {
         }
       }
       return false;
+    },
+    getBullToken: state => {
+      return state.person.token;
     }
   },
   mutations: {
     delPerson: (state) => {
-      state.person = {}
+      state.person = {};
     },
     setPerson: (state, data) => {
       state.person.email = data.email;
@@ -43,11 +46,11 @@ export default {
     },
     setMessage: (state, data) => {
       if (data.id) {
+        state.message = data.message;
         state.person.id = data.id;
         state.person.name = data.name;
         state.person.surname = data.surname;
         state.person.token = data.token;
-        state.message = data.message;
       } else {
         state.message = data.message;
       } 
@@ -76,6 +79,7 @@ export default {
       })
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
-    }
+    },
+    
   }
 }
