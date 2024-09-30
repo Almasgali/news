@@ -123,6 +123,7 @@
                                 <v-btn
                                   @click="addNewComment(item.id)"
                                   size="small"
+                                  :disabled="!btnSendComment"
                                 >
                                     Отправить
                                 </v-btn>
@@ -148,6 +149,7 @@
         },
         computed: {
             news() {
+                console.log(this.$store.state.news.news)
                 return this.$store.state.news.news;
             },
             person() {
@@ -155,6 +157,9 @@
             },
             showMoreBtn() {
                 return this.$store.getters['person/getBullToken'];
+            },
+            btnSendComment() {
+                return this.textComment && this.textComment.length <= 1000;
             }
         },
         methods: {
@@ -177,19 +182,20 @@
                 return this.$store.getters['news/getCountLikes'](id);
             },
             showCommentsDisabled(count) {
-                return count === 0 ? true : false;
+                return count === 0 && !this.showMoreBtn ? true : false;
             },
             getWhatLikesBtn(newsId, personId) {
                 let getCheckIdInLikes = this.$store.getters['news/getCheckIdInLikes']({newsId: newsId, personId: personId});
                 return getCheckIdInLikes ? 'mdi-heart' : 'mdi-heart-outline';
             },
-            addNewComment() {
+            addNewComment(id) {
                 this.$store.dispatch('news/sendCommentToServer', {
                     id: id,
                     token: this.person.token,
                     personId: this.person.id,
                     text: this.textComment
                 });
+                this.textComment = '';
             },
             addLike(id) {
                 this.$store.dispatch('news/sendLikeToServer', {
@@ -201,8 +207,6 @@
                         surname: this.person.surname
                     }
                 });
-                console.log("load");
-                this.$store.dispatch('news/loadLikesFromServer', id);
             }
         },
         created() {

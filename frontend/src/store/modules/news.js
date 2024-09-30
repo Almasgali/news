@@ -44,7 +44,8 @@ export default {
             state.news.find(item => item.id === id).showFullText = !val;
         },
         addComments: (state, payload) => {
-            if (!state.news.find(item => item.id === payload.id).comments) {
+            console.log(payload)
+            if (!state.news.find(item => item.id === payload.id).comments || payload.data.currentPage === 0) {
                 state.news.find(item => item.id === payload.id).comments = [];
             }
             for (let i in payload.data.comments) {
@@ -59,10 +60,7 @@ export default {
             state.news.find(item => item.id === id).showComments = !val;
         },
         addLikes: (state, payload) => {
-            console.log(payload.data);
-            console.log('before', state.news.find(item => item.id === payload.id).likes)
             state.news.find(item => item.id === payload.id).likes = payload.data;
-            console.log('after', state.news.find(item => item.id === payload.id).likes)
         },
         addNewLike: (state, payload) => {
             state.news.find(item => item.id === payload.id).likes.push(payload.person);
@@ -75,6 +73,7 @@ export default {
               .then(responseJson => commit('addNews', responseJson));
         },
         loadCommentsFromServer({commit}, id) {
+            console.log('load')
             fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', {id: id, data: responseJson}));
@@ -90,7 +89,8 @@ export default {
               .then(response => response.json())
               .then(responseJson => commit('addLikes', {id: id, data: responseJson}));
         },
-        sendCommentToServer({commit}, data) {
+        sendCommentToServer({dispatch}, data) {
+            console.log("send");
             fetch(`http://localhost:8080/news/${data.id}/comments?userId=${data.personId}`, {
               method: 'PATCH',
               headers: {
@@ -99,8 +99,9 @@ export default {
               },
               body: JSON.stringify(data.text)
             })
+              .then(response => dispatch('loadCommentsFromServer', data.id))
         },
-        sendLikeToServer({commit}, data) {
+        sendLikeToServer({dispatch}, data) {
             fetch(`http://localhost:8080/news/${data.id}/likes?userId=${data.person.id}`, {
                 method: 'PATCH',
                 headers: {
@@ -108,8 +109,7 @@ export default {
                 'Content-Type': 'application/json'
                 },
             })
-              .then(response => console.log(response))
-            // commit('addNewLike', data);
+              .then(response => dispatch('loadLikesFromServer', data.id))
         }
     }
 }
