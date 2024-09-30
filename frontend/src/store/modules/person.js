@@ -1,7 +1,13 @@
+import { jsx } from "vue/jsx-runtime";
+
+const loadFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem('person'));
+}
+
 export default {
   namespaced: true,
   state: {
-    person: {},
+    person: loadFromLocalStorage() || {},
     message: '',
     validNameReg: /^([a-z]+|[а-яё]+)$/i,
     validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
@@ -39,6 +45,7 @@ export default {
   mutations: {
     delPerson: (state) => {
       state.person = {};
+      localStorage.clear();
     },
     setPerson: (state, data) => {
       state.person.email = data.email;
@@ -54,6 +61,12 @@ export default {
       } else {
         state.message = data.message;
       } 
+      localStorage.setItem('person', JSON.stringify({
+        id: state.person.id,
+        name: state.person.name,
+        surname: state.person.surname,
+        token: state.person.token
+      }))
     }
   },
   actions: {
@@ -67,7 +80,6 @@ export default {
       })
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
-
     },
     sendAuthInfoToServer({commit}, data) {
       fetch(`http://localhost:8080/user/auth`, {
@@ -80,6 +92,5 @@ export default {
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
     },
-    
   }
 }

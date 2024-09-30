@@ -44,7 +44,6 @@ export default {
             state.news.find(item => item.id === id).showFullText = !val;
         },
         addComments: (state, payload) => {
-            console.log(payload)
             if (!state.news.find(item => item.id === payload.id).comments || payload.data.currentPage === 0) {
                 state.news.find(item => item.id === payload.id).comments = [];
             }
@@ -73,7 +72,6 @@ export default {
               .then(responseJson => commit('addNews', responseJson));
         },
         loadCommentsFromServer({commit}, id) {
-            console.log('load')
             fetch(`http://localhost:8080/news/${id}/comments`)
               .then(response => response.json())
               .then(responseJson => commit('addComments', {id: id, data: responseJson}));
@@ -90,7 +88,6 @@ export default {
               .then(responseJson => commit('addLikes', {id: id, data: responseJson}));
         },
         sendCommentToServer({dispatch}, data) {
-            console.log("send");
             fetch(`http://localhost:8080/news/${data.id}/comments?userId=${data.personId}`, {
               method: 'PATCH',
               headers: {

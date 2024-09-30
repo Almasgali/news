@@ -149,7 +149,6 @@
         },
         computed: {
             news() {
-                console.log(this.$store.state.news.news)
                 return this.$store.state.news.news;
             },
             person() {
