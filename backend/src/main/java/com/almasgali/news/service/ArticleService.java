@@ -89,7 +89,7 @@ public class ArticleService {
                     .surname(author.getSurname())
                     .date(c.getDate()).build());
         }
-
+        responseComments.sort(Comparator.comparing(CommentResponse::getDate));
         return CommentsResponse.builder()
                 .comments(responseComments)
                 .currentPage(pComments.getNumber())

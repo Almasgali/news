@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,10 +40,10 @@ public class Article {
     private LocalDateTime date;
     @Getter
     private String image;
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Comment> comments;
-    @ManyToMany(mappedBy = "likedArticles")
+    @ManyToMany(mappedBy = "likedArticles", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<User> likedUsers;
 

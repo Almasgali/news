@@ -33,13 +33,13 @@ public class Comment {
     @Getter
     @Column(columnDefinition="TEXT")
     private String text;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("userId")
     @Getter
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("articleId")
