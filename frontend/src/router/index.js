@@ -3,7 +3,8 @@ import HomePageViews from '../views/HomePageViews.vue'
 import AuthenticationPageViews from '../views/AuthenticationPageViews.vue'
 import RegistrationPageViews from '../views/RegistrationPageViews.vue'
 import MessagePage from '../components/MessagePage.vue'
-
+import AdminPanel from '../components/AdminPanel.vue'
+import EditPanel from '@/components/EditPanel.vue'
 
 const routes = [
   {
@@ -25,6 +26,16 @@ const routes = [
     path: '/warning',
     name: 'message',
     component: MessagePage
+  },
+  {
+    path: '/administration',
+    name: 'administration',
+    component: AdminPanel
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: EditPanel
   }
 ]
 

@@ -107,6 +107,26 @@ export default {
                 },
             })
               .then(response => dispatch('loadLikesFromServer', data.id))
+        },
+        delNews({dispatch}, data) {
+            console.log("del news");
+            fetch(`http://localhost:8080/news`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            })
+                .then(response => dispatch('loadNewsFromServer'))
+        },
+        delComment({dispatch}, data) {
+            console.log("del comment");
+            fetch(`http://localhost:8080/news`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            })
+                .then(response => dispatch('loadCommentsFromServer'), data.newsId)
         }
     }
 }
