@@ -1,7 +1,8 @@
 export default {
     namespaced: true,
     state: {
-        news: []
+        news: [],
+        editNewsId: null
     },
     getters: {
         getDateTime: (state) => (data) => {
@@ -28,6 +29,14 @@ export default {
             let likes = state.news.find(item => item.id === data.newsId).likes;
             if (likes) {
                 return likes.find(item => item.id === data.personId);
+            }
+        },
+        getNewsById: (state) => {
+            console.log(state.editNewsId);
+            if (state.editNewsId) {
+                return state.news.find(item => item.id === state.editNewsId);
+            } else {
+                return ''
             }
         }
     },
@@ -63,6 +72,9 @@ export default {
         },
         addNewLike: (state, payload) => {
             state.news.find(item => item.id === payload.id).likes.push(payload.person);
+        },
+        setEditNewsId: (state, id) => {
+            state.editNewsId = id;
         }
     },
     actions: {
@@ -110,7 +122,7 @@ export default {
         },
         delNews({dispatch}, data) {
             console.log("del news");
-            fetch(`http://localhost:8080/news`, {
+            fetch(`http://localhost:8080/`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -120,13 +132,24 @@ export default {
         },
         delComment({dispatch}, data) {
             console.log("del comment");
-            fetch(`http://localhost:8080/news`, {
+            fetch(`http://localhost:8080/`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 }
             })
                 .then(response => dispatch('loadCommentsFromServer'), data.newsId)
+        },
+        saveNews({dispatch}, data) {
+            console.log("save news");
+            fetch(`http://localhost:8080/`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => dispatch('loadNewsFromServer'))
         }
     }
 }

@@ -82,6 +82,7 @@
                         <v-row>
                             <v-col>
                                 <v-btn
+                                    @click="setEditNewsId(item.id)"
                                     :to="{name: 'edit'}"
                                     icon="mdi-pencil"
                                     size="small"
@@ -207,6 +208,9 @@
                     newsId: newsId,
                     commentId: commentId 
                 });
+            },
+            setEditNewsId(id) {
+                this.$store.commit('news/setEditNewsId', id);
             }
         },
         created() {
