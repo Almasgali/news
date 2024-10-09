@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,12 @@ public class ArticleController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addArticle(@Valid @RequestBody ArticleRequest articleRequest) {
+        articleService.addArticle(articleRequest);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteArticle(@Valid @RequestBody ArticleRequest articleRequest) {
         articleService.addArticle(articleRequest);
     }
 
@@ -78,5 +85,11 @@ public class ArticleController {
                                @RequestParam long userId,
                                @RequestBody CommentRequest commentRequest) {
         articleService.commentArticle(id, userId, commentRequest);
+    }
+
+    @DeleteMapping("/{articleId}/comments/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteComment(@PathVariable long id) {
+        articleService.deleteComment(id);
     }
 }

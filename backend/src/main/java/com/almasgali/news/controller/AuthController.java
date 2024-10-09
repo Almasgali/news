@@ -48,6 +48,7 @@ public class AuthController {
                 .name(authenticatedUser.getName())
                 .surname(authenticatedUser.getSurname())
                 .message("Пользователь успешно авторизован.")
+                .isAdmin(authenticatedUser.isAdmin())
                 .token(jwtToken).build();
 
         return ResponseEntity.ok(loginResponse);

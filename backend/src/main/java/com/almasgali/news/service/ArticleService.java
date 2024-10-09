@@ -71,10 +71,10 @@ public class ArticleService {
                 .text(commentRequest.getText())
                 .build();
         commentRepository.save(comment);
-        article.addComment(comment);
-        articleRepository.save(article);
-        user.addComment(comment);
-        userRepository.save(user);
+    }
+
+    public void deleteComment(long id) {
+        commentRepository.deleteById(id);
     }
 
     public CommentsResponse getComments(long articleId, Pageable p) {
@@ -85,6 +85,7 @@ public class ArticleService {
         for (Comment c : comments) {
             User author = c.getUser();
             responseComments.add(CommentResponse.builder()
+                    .id(c.getId())
                     .text(c.getText())
                     .name(author.getName())
                     .surname(author.getSurname())
