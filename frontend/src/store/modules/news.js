@@ -116,8 +116,8 @@ export default {
               .then(response => dispatch('loadLikesFromServer', data.id))
         },
         delNews({dispatch}, data) {
-            fetch(`http://localhost:8080/news/${data.id}/delete`, {
-                method: 'POST',
+            fetch(`http://localhost:8080/news/${data.id}`, {
+                method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -125,8 +125,8 @@ export default {
                 .then(response => dispatch('loadNewsFromServer'))
         },
         delComment({dispatch}, data) {
-            fetch(`http://localhost:8080/news/${data.newsId}/comments/${data.commentsId}/delete`, {
-                method: 'POST',
+            fetch(`http://localhost:8080/news/${data.newsId}/comments/${data.commentsId}`, {
+                method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -134,8 +134,8 @@ export default {
                 .then(response => dispatch('loadCommentsFromServer', data.newsId))
         },
         createNews({dispatch}, data) {
-            fetch(`http://localhost:8080/news/create`, {
-                method: 'POST',
+            fetch(`http://localhost:8080/news`, {
+                method: 'PATCH',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -144,8 +144,8 @@ export default {
                 .then(response => dispatch('loadNewsFromServer'))
         },
         editNews({state, dispatch}, data) {
-            fetch(`http://localhost:8080/news/${state.editNewsId}/edit`, {
-                method: 'POST',
+            fetch(`http://localhost:8080/news/${state.editNewsId}`, {
+                method: 'PATCH',
                 headers: {
                   'Content-Type': 'application/json'
                 },
