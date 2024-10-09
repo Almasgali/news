@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 import java.util.NoSuchElementException;
 
 @Component("likeLoader")
-public class LikeLoader {
+public class LikesAndThemesLoader {
 
 
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public LikeLoader(@Autowired UserRepository userRepository,
-                      @Autowired ArticleRepository articleRepository) {
+    public LikesAndThemesLoader(@Autowired UserRepository userRepository,
+                                @Autowired ArticleRepository articleRepository) {
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
     }

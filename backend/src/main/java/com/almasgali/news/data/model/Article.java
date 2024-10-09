@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,12 +46,23 @@ public class Article {
     @Getter
     @Setter
     private String image;
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Comment> comments;
-    @ManyToMany(mappedBy = "likedArticles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "likedArticles", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<User> likedUsers;
+    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private Set<Theme> themes;
+
+    public void addTheme(Theme theme) {
+        themes.add(theme);
+    }
+
+    public void deleteTheme(Theme theme) {
+        themes.remove(theme);
+    }
 
     public void addLikedUser(User user) {
         likedUsers.add(user);

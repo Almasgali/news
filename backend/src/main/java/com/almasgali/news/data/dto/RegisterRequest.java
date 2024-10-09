@@ -1,10 +1,10 @@
 package com.almasgali.news.data.dto;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class RegisterRequest {
     private String name;
     private String surname;

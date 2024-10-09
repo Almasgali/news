@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
 @Component("commentLoader")
 public class CommentLoader {
 
-    private UserRepository userRepository;
-    private ArticleRepository articleRepository;
+    private final UserRepository userRepository;
+    private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
     public CommentLoader(@Autowired UserRepository userRepository,
@@ -67,9 +67,9 @@ public class CommentLoader {
                 .text(commentRequest.getText())
                 .build();
         commentRepository.save(comment);
-        article.addComment(comment);
-        articleRepository.save(article);
-        user.addComment(comment);
-        userRepository.save(user);
+//        article.addComment(comment);
+//        articleRepository.save(article);
+//        user.addComment(comment);
+//        userRepository.save(user);
     }
 }

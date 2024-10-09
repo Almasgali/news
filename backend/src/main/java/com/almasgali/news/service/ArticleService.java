@@ -4,11 +4,14 @@ import com.almasgali.news.data.dto.ArticleRequest;
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
 import com.almasgali.news.data.dto.CommentsResponse;
+import com.almasgali.news.data.dto.ThemeRequest;
 import com.almasgali.news.data.model.Article;
 import com.almasgali.news.data.model.Comment;
+import com.almasgali.news.data.model.Theme;
 import com.almasgali.news.data.model.User;
 import com.almasgali.news.repository.ArticleRepository;
 import com.almasgali.news.repository.CommentRepository;
+import com.almasgali.news.repository.ThemeRepository;
 import com.almasgali.news.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,13 +30,16 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final ThemeRepository themeRepository;
 
     public ArticleService(@Autowired ArticleRepository articleRepository,
                           @Autowired UserRepository userRepository,
-                          @Autowired CommentRepository commentRepository) {
+                          @Autowired CommentRepository commentRepository,
+                          @Autowired ThemeRepository themeRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.themeRepository = themeRepository;
     }
 
     public List<Article> getLatestNews() {
@@ -59,6 +65,28 @@ public class ArticleService {
         }
         userRepository.save(user);
         articleRepository.save(article);
+    }
+
+    public void addThemeToArticle(long articleId, long themeId) {
+        Theme theme = themeRepository.findById(themeId).orElseThrow(NoSuchElementException::new);
+        Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
+        article.addTheme(theme);
+        theme.addArticle(article);
+        themeRepository.save(theme);
+        articleRepository.save(article);
+    }
+
+    public void deleteThemeFromArticle(long articleId, long themeId) {
+        Theme theme = themeRepository.findById(themeId).orElseThrow(NoSuchElementException::new);
+        Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
+        article.deleteTheme(theme);
+        theme.deleteArticle(article);
+        themeRepository.save(theme);
+        articleRepository.save(article);
+    }
+
+    public List<Theme> getArticleThemes(long id) {
+        return themeRepository.findByArticlesId(id);
     }
 
     public void commentArticle(long articleId, long userId, CommentRequest commentRequest) {
@@ -119,5 +147,19 @@ public class ArticleService {
                 .image(articleRequest.getImage())
                 .date(LocalDateTime.now())
                 .build());
+    }
+
+    public void addTheme(ThemeRequest request) {
+        themeRepository.save(Theme.builder()
+                .name(request.getName())
+                .build());
+    }
+
+    public void deleteTheme(long id) {
+        themeRepository.deleteById(id);
+    }
+
+    public List<Theme> getThemes() {
+        return themeRepository.findAll();
     }
 }
