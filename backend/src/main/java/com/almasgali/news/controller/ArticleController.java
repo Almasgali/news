@@ -1,12 +1,9 @@
 package com.almasgali.news.controller;
 
 import com.almasgali.news.data.dto.ArticleRequest;
-import com.almasgali.news.data.dto.ArticleThemesRequest;
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentsResponse;
-import com.almasgali.news.data.dto.ThemeRequest;
 import com.almasgali.news.data.model.Article;
-import com.almasgali.news.data.model.Theme;
 import com.almasgali.news.data.model.User;
 import com.almasgali.news.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +46,10 @@ public class ArticleController {
         articleService.addArticle(articleRequest);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteArticle(@Valid @RequestBody ArticleRequest articleRequest) {
-        articleService.addArticle(articleRequest);
+    public void deleteArticle(@PathVariable long id) {
+        articleService.deleteArticle(id);
     }
 
     @PatchMapping("/{id}")
