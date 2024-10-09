@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,13 +33,17 @@ public class Article {
     @Getter
     private long id;
     @Getter
+    @Setter
     private String title;
     @Getter
+    @Setter
     @Column(columnDefinition="TEXT")
     private String text;
     @Getter
+    @Setter
     private LocalDateTime date;
     @Getter
+    @Setter
     private String image;
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
     @JsonIgnore

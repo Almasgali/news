@@ -1,5 +1,6 @@
 package com.almasgali.news.service;
 
+import com.almasgali.news.data.dto.ArticleRequest;
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
 import com.almasgali.news.data.dto.CommentsResponse;
@@ -49,12 +50,12 @@ public class ArticleService {
     public void likeArticle(long articleId, long userId) {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
-        if (!user.isArticleLiked(article)) {
-            user.addLikedArticle(article);
-            article.addLikedUser(user);
-        } else {
+        if (user.isArticleLiked(article)) {
             user.removeLikedArticle(article);
             article.removeLikedUser(user);
+        } else {
+            user.addLikedArticle(article);
+            article.addLikedUser(user);
         }
         userRepository.save(user);
         articleRepository.save(article);
@@ -89,11 +90,33 @@ public class ArticleService {
                     .surname(author.getSurname())
                     .date(c.getDate()).build());
         }
-        responseComments.sort(Comparator.comparing(CommentResponse::getDate));
+        responseComments.sort(Comparator.comparing(CommentResponse::getDate).reversed());
         return CommentsResponse.builder()
                 .comments(responseComments)
                 .currentPage(pComments.getNumber())
                 .totalItems(pComments.getTotalElements())
                 .totalPages(pComments.getTotalPages()).build();
+    }
+
+    public void editArticle(ArticleRequest request, long id) {
+        articleRepository.updateArticle(
+                id,
+                request.getTitle(),
+                request.getText(),
+                request.getImage(),
+                LocalDateTime.now());
+    }
+
+    public void deleteArticle(long id) {
+        articleRepository.deleteById(id);
+    }
+
+    public void addArticle(ArticleRequest articleRequest) {
+        articleRepository.save(Article.builder()
+                .title(articleRequest.getTitle())
+                .text(articleRequest.getText())
+                .image(articleRequest.getImage())
+                .date(LocalDateTime.now())
+                .build());
     }
 }

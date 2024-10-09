@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -42,6 +44,8 @@ public class User implements UserDetails {
     private String surname;
     @Column(unique = true)
     private String email;
+    @Getter
+    private boolean isAdmin;
     @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
@@ -74,6 +78,9 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (isAdmin) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
+        }
         return Collections.emptyList();
     }
 

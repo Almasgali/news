@@ -28,24 +28,32 @@ public class UserLoader {
     public void load() {
         if (userRepository.findAll().isEmpty()) {
             userRepository.save(User.builder()
-                    .id(1)
                     .name("Ivan")
                     .surname("Ivanov")
                     .email("ivanov@mail.ru")
-                    .password(passwordEncoder.encode("aaaaaaaa")).build());
+                    .password(passwordEncoder.encode("aaaaaaaa"))
+                    .isAdmin(false)
+                    .build());
             userRepository.save(User.builder()
-                    .id(2)
                     .name("Almas")
                     .surname("Khadyrov")
                     .email("khadyrov@mail.ru")
                     .password(passwordEncoder.encode("bbbbbbbb"))
+                    .isAdmin(false)
                     .build());
             userRepository.save(User.builder()
-                    .id(3)
                     .name("Ksenia")
                     .surname("Oskina")
                     .email("oskina@mail.ru")
                     .password(passwordEncoder.encode("cccccccc"))
+                    .isAdmin(false)
+                    .build());
+            userRepository.save(User.builder()
+                    .name("Admin")
+                    .surname("Adminov")
+                    .email("admin@mail.ru")
+                    .password(passwordEncoder.encode("password"))
+                    .isAdmin(true)
                     .build());
             publisher.publishEvent(new UsersLoadedEvent(this));
         }

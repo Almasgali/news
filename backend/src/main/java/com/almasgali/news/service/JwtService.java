@@ -8,10 +8,12 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +29,19 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public List<? extends GrantedAuthority> extractRoles(String token) {
+        return (List<? extends GrantedAuthority>) extractClaim(token, (claims) -> claims.get("role"));
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("role", userDetails.getAuthorities());
+        return generateToken(claims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {

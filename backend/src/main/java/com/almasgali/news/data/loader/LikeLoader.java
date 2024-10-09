@@ -36,12 +36,12 @@ public class LikeLoader {
     private void likeArticle(long articleId, long userId) {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
-        if (!user.isArticleLiked(article)) {
-            user.addLikedArticle(article);
-            article.addLikedUser(user);
-        } else {
+        if (user.isArticleLiked(article)) {
             user.removeLikedArticle(article);
             article.removeLikedUser(user);
+        } else {
+            user.addLikedArticle(article);
+            article.addLikedUser(user);
         }
         userRepository.save(user);
         articleRepository.save(article);
