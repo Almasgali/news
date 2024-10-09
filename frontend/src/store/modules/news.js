@@ -32,12 +32,7 @@ export default {
             }
         },
         getNewsById: (state) => {
-            console.log(state.editNewsId);
-            if (state.editNewsId) {
-                return state.news.find(item => item.id === state.editNewsId);
-            } else {
-                return ''
-            }
+            return state.news.find(item => item.id === state.editNewsId) || {};
         }
     },
     mutations: {
@@ -121,8 +116,7 @@ export default {
               .then(response => dispatch('loadLikesFromServer', data.id))
         },
         delNews({dispatch}, data) {
-            console.log("del news");
-            fetch(`http://localhost:8080/`, {
+            fetch(`http://localhost:8080/news/${data.id}/delete`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -131,18 +125,16 @@ export default {
                 .then(response => dispatch('loadNewsFromServer'))
         },
         delComment({dispatch}, data) {
-            console.log("del comment");
-            fetch(`http://localhost:8080/`, {
+            fetch(`http://localhost:8080/news/${data.newsId}/comments/${data.commentsId}/delete`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 }
             })
-                .then(response => dispatch('loadCommentsFromServer'), data.newsId)
+                .then(response => dispatch('loadCommentsFromServer', data.newsId))
         },
-        saveNews({dispatch}, data) {
-            console.log("save news");
-            fetch(`http://localhost:8080/`, {
+        createNews({dispatch}, data) {
+            fetch(`http://localhost:8080/news/create`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -150,6 +142,16 @@ export default {
                 body: JSON.stringify(data)
             })
                 .then(response => dispatch('loadNewsFromServer'))
-        }
+        },
+        editNews({state, dispatch}, data) {
+            fetch(`http://localhost:8080/news/${state.editNewsId}/edit`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => dispatch('loadNewsFromServer'))
+        },
     }
 }

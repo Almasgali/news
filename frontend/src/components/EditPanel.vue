@@ -3,7 +3,17 @@
         <v-container>
             <v-row>
                 <v-col>
-                    image
+                    <v-text-field
+                      label="Ссылка на картинку"
+                      :rules="rules.img"
+                      v-model="img"
+                      :value="img"
+                      type="url"
+                    />
+                    <img
+                      :width="300"
+                      :src="img"
+                    >
                 </v-col>
                 <v-col>
                     <v-textarea
@@ -40,6 +50,7 @@
                 </v-btn>
             </v-row>
         </v-container>
+        {{ this.$store.state.news.editNewsId }}
     </div>
 </template>
 
@@ -52,24 +63,41 @@
                         v => !!v || 'Введите заголовок',
                         v => (v && v.length <= 255) || 'Максимум 255 символов'
                     ],
-                    text: [v => !!v || 'Введите текст']
+                    text: [v => !!v || 'Введите текст'],
+                    img: [v=> (!!v && !this.imgLoad) || 'Введите ссылку на картинку']
                 },
-                img: '',
-                title: this.$store.getters['news/getNewsById'].title,
-                text: this.$store.getters['news/getNewsById'].text
+                img: this.$store.getters['news/getNewsById'].image || '',
+                title: this.$store.getters['news/getNewsById'].title || '',
+                text: this.$store.getters['news/getNewsById'].text || ''
             }
         },
         computed: {
             btnDisabled() {
                 return this.title && this.title.length <= 255 && this.text;
+            },
+            imgLoad() {
+                let img = new Image();
+                img.src = this.img;
+                img.onload = () => {
+                    console.log("load")
+                    return true;
+                }
+                console.log("not load");
+                return false;
             }
         },
         methods: {
             saveNews() {
-                this.$store.dispatch('news/saveNews', {
-                    title: title,
-                    text: text
-                });
+                let data = {
+                    image: this.img,
+                    title: this.title,
+                    text: this.text
+                }
+                if (this.$store.state.news.editNewsId) {
+                    this.$store.dispatch('news/editNews', data);
+                } else {
+                    this.$store.dispatch('news/createNews', data);
+                }
                 this.$store.commit('news/setEditNewsId', null);
             }
         }

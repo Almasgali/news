@@ -1,5 +1,13 @@
 <template>
     <div>
+        {{ this.$store.state.news.editNewsId }}
+
+        <v-btn
+          @click="setEditNewsId(null)"
+          :to="{name: 'edit'}"
+        >
+            Создать статью
+        </v-btn>
         <v-container
           v-for="item in news"
           :key="item.id"
@@ -201,7 +209,7 @@
                 });
             },
             delNews(newsId) {
-                this.$store.dispatch('news/delComment', newsId);
+                this.$store.dispatch('news/delNews', newsId);
             },
             delComment(newsId, commentId) {
                 this.$store.dispatch('news/delComment', {
