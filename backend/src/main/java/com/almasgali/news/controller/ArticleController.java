@@ -1,6 +1,7 @@
 package com.almasgali.news.controller;
 
 import com.almasgali.news.data.dto.ArticleRequest;
+import com.almasgali.news.data.dto.ArticleThemesRequest;
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentsResponse;
 import com.almasgali.news.data.dto.ThemeRequest;
@@ -110,6 +111,11 @@ public class ArticleController {
     @GetMapping("/{id}/themes")
     public List<Theme> getArticleThemes(@PathVariable long id) {
         return articleService.getArticleThemes(id);
+    }
+
+    @GetMapping("/themes/filter")
+    public List<Article> filterArticlesByThemes(@RequestBody ArticleThemesRequest request) {
+        return articleService.filterArticlesByThemes(request);
     }
 
     @DeleteMapping("/themes/{id}")

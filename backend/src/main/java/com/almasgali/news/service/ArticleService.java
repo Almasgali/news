@@ -1,6 +1,7 @@
 package com.almasgali.news.service;
 
 import com.almasgali.news.data.dto.ArticleRequest;
+import com.almasgali.news.data.dto.ArticleThemesRequest;
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
 import com.almasgali.news.data.dto.CommentsResponse;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -161,5 +164,31 @@ public class ArticleService {
 
     public List<Theme> getThemes() {
         return themeRepository.findAll();
+    }
+
+    public List<Article> filterArticlesByThemes(ArticleThemesRequest request) {
+        List<Article> response = new ArrayList<>();
+        for (Article a : getLatestNews()) {
+            Set<Long> articleThemesIds = a.getThemes().stream().map(Theme::getId).collect(Collectors.toSet());
+            if (request.getMandatoryThemes() != null &&
+                    !articleThemesIds.containsAll(request.getMandatoryThemes())) {
+                continue;
+            }
+            if (request.getForbiddenThemes() == null) {
+                response.add(a);
+                continue;
+            }
+            boolean forbidden = false;
+            for (long id : request.getForbiddenThemes()) {
+                if (articleThemesIds.contains(id)) {
+                    forbidden = true;
+                    break;
+                }
+            }
+            if (!forbidden) {
+                response.add(a);
+            }
+        }
+        return response;
     }
 }

@@ -54,6 +54,7 @@ public class Article {
     private Set<User> likedUsers;
     @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
+    @Getter
     private Set<Theme> themes;
 
     public void addTheme(Theme theme) {
