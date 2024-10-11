@@ -109,37 +109,40 @@ export default {
             fetch(`http://localhost:8080/news/${data.id}/likes?userId=${data.person.id}`, {
                 method: 'PATCH',
                 headers: {
-                'Authorization': `Bearer ${data.token}`,
-                'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
                 },
             })
               .then(response => dispatch('loadLikesFromServer', data.id))
         },
         delNews({dispatch}, data) {
-            fetch(`http://localhost:8080/news/${data.id}`, {
+            fetch(`http://localhost:8080/news/${data.newsId}`, {
                 method: 'DELETE',
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
                 }
             })
                 .then(response => dispatch('loadNewsFromServer'))
         },
         delComment({dispatch}, data) {
-            fetch(`http://localhost:8080/news/${data.newsId}/comments/${data.commentsId}`, {
+            fetch(`http://localhost:8080/news/comments/${data.commentId}`, {
                 method: 'DELETE',
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
                 }
             })
                 .then(response => dispatch('loadCommentsFromServer', data.newsId))
         },
         createNews({dispatch}, data) {
             fetch(`http://localhost:8080/news`, {
-                method: 'PATCH',
+                method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data.data)
             })
                 .then(response => dispatch('loadNewsFromServer'))
         },
@@ -147,9 +150,10 @@ export default {
             fetch(`http://localhost:8080/news/${state.editNewsId}`, {
                 method: 'PATCH',
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data.data)
             })
                 .then(response => dispatch('loadNewsFromServer'))
         },

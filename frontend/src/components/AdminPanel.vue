@@ -209,10 +209,14 @@
                 });
             },
             delNews(newsId) {
-                this.$store.dispatch('news/delNews', newsId);
+                this.$store.dispatch('news/delNews', {
+                    token: this.$store.state.person.person.token,
+                    newsId: newsId
+                });
             },
             delComment(newsId, commentId) {
                 this.$store.dispatch('news/delComment', {
+                    token: this.$store.state.person.person.token,
                     newsId: newsId,
                     commentId: commentId 
                 });

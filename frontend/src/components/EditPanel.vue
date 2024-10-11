@@ -6,6 +6,7 @@
                     <v-text-field
                       label="Ссылка на картинку"
                       :rules="rules.img"
+                      :counter="255"
                       v-model="img"
                       :value="img"
                       type="url"
@@ -44,13 +45,13 @@
             <v-row>
                 <v-btn
                     :disabled="!btnDisabled"
+                    :to="{name: 'home'}"
                     @click="saveNews"
                 >
                     Сохранить изменения
                 </v-btn>
             </v-row>
         </v-container>
-        {{ this.$store.state.news.editNewsId }}
     </div>
 </template>
 
@@ -64,7 +65,10 @@
                         v => (v && v.length <= 255) || 'Максимум 255 символов'
                     ],
                     text: [v => !!v || 'Введите текст'],
-                    img: [v=> (!!v && !this.imgLoad) || 'Введите ссылку на картинку']
+                    img: [
+                        v => (v && v.length <= 255) || 'Максимум 255 символов',
+                        v => (!!v && !this.imgLoad) || 'Введите ссылку на картинку'
+                    ]
                 },
                 img: this.$store.getters['news/getNewsById'].image || '',
                 title: this.$store.getters['news/getNewsById'].title || '',
@@ -79,10 +83,8 @@
                 let img = new Image();
                 img.src = this.img;
                 img.onload = () => {
-                    console.log("load")
                     return true;
                 }
-                console.log("not load");
                 return false;
             }
         },
@@ -94,9 +96,15 @@
                     text: this.text
                 }
                 if (this.$store.state.news.editNewsId) {
-                    this.$store.dispatch('news/editNews', data);
+                    this.$store.dispatch('news/editNews', {
+                        token: this.$store.state.person.person.token,
+                        data: data
+                    });
                 } else {
-                    this.$store.dispatch('news/createNews', data);
+                    this.$store.dispatch('news/createNews', {
+                        token: this.$store.state.person.person.token,
+                        data: data
+                    });
                 }
                 this.$store.commit('news/setEditNewsId', null);
             }
