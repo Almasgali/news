@@ -47,9 +47,7 @@ public class ArticleService {
 
     public List<Article> getLatestNews() {
         LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
-        List<Article> latestNews = articleRepository.findAllWithDateAfter(oneDayAgo);
-        latestNews.sort(Comparator.comparing(Article::getDate));
-        return latestNews;
+        return articleRepository.findAllWithDateAfter(oneDayAgo);
     }
 
     public List<User> getLikedUsers(long articleId) {
@@ -109,7 +107,7 @@ public class ArticleService {
     }
 
     public CommentsResponse getComments(long articleId, Pageable p) {
-        Page<Comment> pComments = commentRepository.findByArticleId(articleId, p);
+        Page<Comment> pComments = commentRepository.findAllByArticleIdOrderByDateDesc(articleId, p);
         List<Comment> comments = pComments.getContent();
 
         List<CommentResponse> responseComments = new ArrayList<>();
@@ -122,7 +120,7 @@ public class ArticleService {
                     .surname(author.getSurname())
                     .date(c.getDate()).build());
         }
-        responseComments.sort(Comparator.comparing(CommentResponse::getDate).reversed());
+
         return CommentsResponse.builder()
                 .comments(responseComments)
                 .currentPage(pComments.getNumber())

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    @Query("SELECT a FROM Article a WHERE date >= :oneDayAgoDate ORDER BY date")
+    @Query("SELECT a FROM Article a WHERE date >= :oneDayAgoDate ORDER BY date DESC")
     List<Article> findAllWithDateAfter(@Param("oneDayAgoDate") LocalDateTime oneDayAgoDate);
 
     @Modifying
