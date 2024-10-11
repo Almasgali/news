@@ -9,7 +9,8 @@ export default {
     message: '',
     validNameReg: /^([a-z]+|[а-яё]+)$/i,
     validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
-    validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/
+    validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/,
+    dialogMessage: false
   },
   getters: {
     getFullName: state => {
@@ -67,6 +68,9 @@ export default {
         admin: state.person.admin,
         token: state.person.token
       }))
+    },
+    changeDialogMessage: (state) => {
+      state.dialogMessage = !state.dialogMessage;
     }
   },
   actions: {

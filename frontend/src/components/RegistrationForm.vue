@@ -1,66 +1,68 @@
 <template>
-    <v-form @submit.prevent="">
-        <v-container class="container">
-            <v-row>
-                <v-col>
-                    <h3>Регистрация нового пользователся</h3>
-                </v-col>
-            </v-row>
-            <v-row justify="center">
-                <v-col>
-                    <v-text-field
-                      v-model="person.name"
-                      :rules="rules.errorName"
-                      type="text" 
-                      label="Имя"
-                    />
-                </v-col>
-                <v-col>
-                    <v-text-field
-                      v-model="person.surname"
-                      :rules="rules.errorSurname"
-                      type="text" 
-                      label="Фамилия"
-                    />
-                </v-col>
-            </v-row>
-            <v-row justify="center">
-                <v-col>
-                    <v-text-field
-                      v-model="person.email" 
-                      :rules="rules.errorEmail"
-                      type="email" 
-                      label="Email"
-                    />
-                </v-col>
-            </v-row>
-            <v-row justify="center">
-                <v-col>
-                    <v-text-field
-                      v-model="person.password"
-                      :rules="rules.errorPassword"
-                      type="password" 
-                      label="Пароль"
-                    />
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn
-                      :disabled="btnDisabled"
-                      :to="{name: 'message'}"
-                      @click="registration"
-                    >
-                        Зарегистрироваться
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
-    </v-form>
+    <div>
+        <v-form @submit.prevent="">
+            <v-container class="container">
+                <v-row>
+                    <v-col>
+                        <h3>Регистрация нового пользователся</h3>
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <v-text-field
+                        v-model="person.name"
+                        :rules="rules.errorName"
+                        type="text" 
+                        label="Имя"
+                        />
+                    </v-col>
+                    <v-col>
+                        <v-text-field
+                        v-model="person.surname"
+                        :rules="rules.errorSurname"
+                        type="text" 
+                        label="Фамилия"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <v-text-field
+                        v-model="person.email" 
+                        :rules="rules.errorEmail"
+                        type="email" 
+                        label="Email"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <v-text-field
+                        v-model="person.password"
+                        :rules="rules.errorPassword"
+                        type="password" 
+                        label="Пароль"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-btn
+                        :disabled="btnDisabled"
+                        @click="registration"
+                        >
+                            Зарегистрироваться
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-form>
+        <DialogComponent/>
+    </div>
 </template>
 
 <script>
-import { parseQuery } from 'vue-router';
+    import DialogComponent from '../components/DialogComponent.vue'
 
     export default {
         data() {
@@ -107,9 +109,13 @@ import { parseQuery } from 'vue-router';
         },
         methods: {
             registration() {
+                this.$store.commit('person/changeDialogMessage');
                 let person = this.person;
                 this.$store.dispatch('person/sendRegInfoToServer', person);
             }
         },
+        components: {
+            DialogComponent
+        }
     }
 </script>
