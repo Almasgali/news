@@ -51,12 +51,12 @@
                 </v-row>
             </v-container>
         </v-form>
-        <DialogComponent/>
+        <DialogMessage/>
     </div>
 </template>
 
 <script>
-    import DialogComponent from '../components/DialogComponent.vue'
+    import DialogMessage from './DialogMessage.vue'
 
     export default {
         data() {
@@ -97,7 +97,7 @@
             }
         },
         components: {
-            DialogComponent
+            DialogMessage
         }
     }
 </script>
