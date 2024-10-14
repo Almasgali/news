@@ -1,12 +1,7 @@
 <template>
   <v-container>
     <AppBar/>
-    <AdminPanel
-      v-if="admin"
-    />
-    <NewsArticle
-      v-else
-    />
+    <NewsArticle/>
   </v-container>
 </template>
 
@@ -16,11 +11,6 @@
   import AdminPanel from '../components/AdminPanel.vue';
 
   export default {
-    computed: {
-      admin() {
-        return this.$store.state.person.person.admin;
-      }
-    },
     components: {
       AppBar,
       NewsArticle,

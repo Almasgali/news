@@ -1,5 +1,12 @@
 <template>
     <div>
+        <v-btn
+          v-if="person.admin"
+          @click="setEditNewsId(null)"
+          :to="{name: 'edit'}"
+        >
+            Создать статью
+        </v-btn>
         <v-container
           v-for="item in news"
           :key="item.id"
@@ -72,6 +79,34 @@
                         </v-row>
                     </v-container>
                 </v-col>
+                <v-col
+                  v-if="person.admin"  
+                  cols="2"
+                >
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                <v-btn
+                                    @click="delNews(item.id)"
+                                    icon="mdi-delete-outline"
+                                    size="small"
+                                    elevation="0"                                
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-btn
+                                    @click="setEditNewsId(item.id)"
+                                    :to="{name: 'edit'}"
+                                    icon="mdi-pencil"
+                                    size="small"
+                                    elevation="0"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-col>
                 <v-container
                   v-if="item.showComments"
                 >
@@ -85,6 +120,14 @@
                           class="text-body-2 pb-1"
                         >
                             {{ comment.text }}
+                        </v-col>
+                        <v-col v-if="person.admin">
+                            <v-btn
+                                @click="delComment(item.id, comment.id)"
+                                icon="mdi-delete-outline"
+                                size="small"
+                                elevation="0"
+                            />
                         </v-col>
                         <v-col
                           cols="3"
@@ -210,6 +253,22 @@
                         surname: this.person.surname
                     }
                 });
+            },
+            delNews(newsId) {
+                this.$store.dispatch('news/delNews', {
+                    token: this.$store.state.person.person.token,
+                    newsId: newsId
+                });
+            },
+            delComment(newsId, commentId) {
+                this.$store.dispatch('news/delComment', {
+                    token: this.$store.state.person.person.token,
+                    newsId: newsId,
+                    commentId: commentId 
+                });
+            },
+            setEditNewsId(id) {
+                this.$store.commit('news/setEditNewsId', id);
             }
         },
         created() {

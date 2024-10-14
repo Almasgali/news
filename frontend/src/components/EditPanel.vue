@@ -37,6 +37,19 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <v-select
+                        label="Темы"
+                        :rules="rules.themes"
+                        v-model="themes"
+                        :items="allThemes"
+                        item-title="name"
+                        item-value="id"
+                        multiple
+                    />
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
                     <v-textarea
                         label="Текст статьи"
                         variant="outlined"
@@ -80,11 +93,15 @@
                     img: [
                         v => (v && v.length <= 255) || 'Максимум 255 символов',
                         v => (!!v && !this.imgLoad) || 'Введите ссылку на картинку'
+                    ],
+                    themes: [
+                        v => v.length !== 0 || 'Выберите темы'
                     ]
                 },
                 img: this.$store.getters['news/getNewsById'].image || '',
                 title: this.$store.getters['news/getNewsById'].title || '',
-                text: this.$store.getters['news/getNewsById'].text || ''
+                text: this.$store.getters['news/getNewsById'].text || '',
+                themes: this.$store.getters['news/getNewsById'].themes || []
             }
         },
         computed: {
@@ -98,6 +115,10 @@
                     return true;
                 }
                 return false;
+            },
+            allThemes() {
+                this.$store.dispatch('news/loadAllThemesFromServer');
+                return this.$store.state.news.allThemes;
             }
         },
         methods: {
@@ -106,12 +127,31 @@
                     image: this.img,
                     title: this.title,
                     text: this.text
-                }
+                };
+                let before = this.$store.getters['news/getNewsById'].themes;
                 if (this.$store.state.news.editNewsId) {
                     this.$store.dispatch('news/editNews', {
                         token: this.$store.state.person.person.token,
                         data: data
                     });
+                    if (before) {
+                        for (let i in before) {
+                            if (!this.themes.find(item => item === before[i].id)) {
+                                this.$store.dispatch('news/delThemesInNews', {
+                                    token: this.$store.state.person.person.token,
+                                    themeId: before[i].id
+                                });
+                            }
+                        }
+                    }
+                    for (let i in this.themes) {
+                        if (before && !before.find(item => item.id === this.themes[i])) {
+                            this.$store.dispatch('news/addThemesInNews', {
+                                token: this.$store.state.person.person.token,
+                                themeId: this.themes[i]
+                            });
+                        }
+                    }
                 } else {
                     this.$store.dispatch('news/createNews', {
                         token: this.$store.state.person.person.token,

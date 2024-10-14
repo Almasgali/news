@@ -2,7 +2,8 @@ export default {
     namespaced: true,
     state: {
         news: [],
-        editNewsId: null
+        editNewsId: null,
+        allThemes: []
     },
     getters: {
         getDateTime: (state) => (data) => {
@@ -82,6 +83,9 @@ export default {
         addThemes: (state, payload) => {
             state.news.find(item => item.id === payload.id).themes = payload.data;
         },
+        addAllThemes: (state, payload) => {
+            state.allThemes = payload;
+        }
     },
     actions: {
         loadNewsFromServer ({commit}) {
@@ -173,5 +177,28 @@ export default {
               .then(response => response.json())
               .then(responseJson => commit('addThemes', {id: id, data: responseJson}));
         },
+        loadAllThemesFromServer({commit}) {
+            fetch(`http://localhost:8080/news/themes`)
+              .then(response => response.json())
+              .then(responseJson => commit('addAllThemes', responseJson));
+        },
+        addThemesInNews({state}, data) {
+            fetch(`http://localhost:8080/news/${state.editNewsId}/themes?themeId=${data.themeId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+        },
+        delThemesInNews({state}, data) {
+            fetch(`http://localhost:8080/news/${state.editNewsId}/themes?themeId=${data.themeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${data.token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
     }
 }
