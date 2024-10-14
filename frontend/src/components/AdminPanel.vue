@@ -1,7 +1,5 @@
 <template>
     <div>
-        {{ this.$store.state.news.editNewsId }}
-
         <v-btn
           @click="setEditNewsId(null)"
           :to="{name: 'edit'}"

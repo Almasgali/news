@@ -2,6 +2,13 @@
     <div>
         <v-container>
             <v-row>
+                <v-btn
+                    icon="mdi-arrow-left"
+                    variant="text"
+                    @click="exit"
+                />
+            </v-row>
+            <v-row>
                 <v-col>
                     <v-text-field
                       label="Ссылка на картинку"
@@ -43,19 +50,24 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-btn
-                    :disabled="!btnDisabled"
-                    :to="{name: 'home'}"
-                    @click="saveNews"
-                >
-                    Сохранить изменения
-                </v-btn>
+                <v-col cols="4">
+                    <v-btn
+                        :disabled="!btnDisabled"
+                        :to="{name: 'home'}"
+                        @click="saveNews"
+                    >
+                        Сохранить изменения
+                    </v-btn>
+                </v-col>
             </v-row>
         </v-container>
+        <DialogYesNo/>
     </div>
 </template>
 
 <script>
+    import DialogYesNo from './DialogYesNo.vue'
+
     export default {
         data() {
             return {
@@ -107,7 +119,14 @@
                     });
                 }
                 this.$store.commit('news/setEditNewsId', null);
+            },
+            exit() {
+                this.$store.commit('person/setMessage', {message: "Вы уверены, что хойтите выйти из редактора? Изменения не сохранятся"});
+                this.$store.commit('person/changeDialogMessage');
             }
+        },
+        components: {
+            DialogYesNo
         }
     }
 </script>

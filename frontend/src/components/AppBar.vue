@@ -16,12 +16,12 @@
         Войти
       </v-btn>
     </v-app-bar>
-    <DialogExit/>
+    <DialogYesNo/>
   </div>
 </template>
 
 <script>
-  import DialogExit from './DialogExit.vue'
+  import DialogYesNo from './DialogYesNo.vue'
 
   export default {
     computed: {
@@ -41,11 +41,12 @@
     },
     methods: {
       exit() {
+        this.$store.commit('person/setMessage', {message: "Вы уверены, что хойтите выйти?"});
         this.$store.commit('person/changeDialogMessage');
       }
     },
     components: {
-      DialogExit
+      DialogYesNo
     }
   }
 </script>

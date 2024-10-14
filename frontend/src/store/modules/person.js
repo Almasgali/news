@@ -58,16 +58,17 @@ export default {
         state.person.surname = data.surname;
         state.person.token = data.token;
         state.person.admin = data.admin;
+        
+        localStorage.setItem('person', JSON.stringify({
+          id: state.person.id,
+          name: state.person.name,
+          surname: state.person.surname,
+          admin: state.person.admin,
+          token: state.person.token
+        }))
       } else {
         state.message = data.message;
       }
-      localStorage.setItem('person', JSON.stringify({
-        id: state.person.id,
-        name: state.person.name,
-        surname: state.person.surname,
-        admin: state.person.admin,
-        token: state.person.token
-      }))
     },
     changeDialogMessage: (state) => {
       state.dialogMessage = !state.dialogMessage;

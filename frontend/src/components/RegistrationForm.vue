@@ -3,6 +3,13 @@
         <v-form @submit.prevent="">
             <v-container class="container">
                 <v-row>
+                    <v-btn
+                        :to="{name: 'authentication'}"
+                        icon="mdi-arrow-left"
+                        variant="text"
+                    />
+                </v-row>
+                <v-row>
                     <v-col>
                         <h3>Регистрация нового пользователся</h3>
                     </v-col>
