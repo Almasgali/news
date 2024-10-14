@@ -33,6 +33,14 @@ export default {
         },
         getNewsById: (state) => {
             return state.news.find(item => item.id === state.editNewsId) || {};
+        },
+        getThemesForNews: (state) => (id) => {
+            let allThemes = state.news.find(item => item.id === id).themes;
+            let res = '';
+            for (let i in allThemes) {
+                res += `#${allThemes[i].name} `;
+            }
+            return res;
         }
     },
     mutations: {
@@ -70,7 +78,10 @@ export default {
         },
         setEditNewsId: (state, id) => {
             state.editNewsId = id;
-        }
+        },
+        addThemes: (state, payload) => {
+            state.news.find(item => item.id === payload.id).themes = payload.data;
+        },
     },
     actions: {
         loadNewsFromServer ({commit}) {
@@ -156,6 +167,11 @@ export default {
                 body: JSON.stringify(data.data)
             })
                 .then(response => dispatch('loadNewsFromServer'))
+        },
+        loadThemesFromServer({commit}, id) {
+            fetch(`http://localhost:8080/news/${id}/themes`)
+              .then(response => response.json())
+              .then(responseJson => commit('addThemes', {id: id, data: responseJson}));
         },
     }
 }

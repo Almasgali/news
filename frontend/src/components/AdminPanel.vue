@@ -18,9 +18,14 @@
                     >
                 </v-col>
                 <v-col>
-                    <h2>
-                        {{ item.title }}
-                    </h2>
+                    <v-row>
+                        <h2>
+                            {{ item.title }}
+                        </h2>
+                    </v-row>
+                    <v-row>
+                        {{ this.$store.getters['news/getThemesForNews'](item.id) }}
+                    </v-row>
                     <v-row
                       class="text-start mt-8"
                     >
