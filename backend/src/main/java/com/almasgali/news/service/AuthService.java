@@ -3,7 +3,6 @@ package com.almasgali.news.service;
 import com.almasgali.news.data.dto.AuthRequest;
 import com.almasgali.news.data.dto.AuthResponse;
 import com.almasgali.news.data.dto.RegisterRequest;
-import com.almasgali.news.data.dto.RegisterResponse;
 import com.almasgali.news.data.model.User;
 import com.almasgali.news.exception.auth.UserAlreadyExistsException;
 import com.almasgali.news.repository.UserRepository;
@@ -12,10 +11,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
