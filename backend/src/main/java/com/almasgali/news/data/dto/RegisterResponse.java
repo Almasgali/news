@@ -1,10 +1,10 @@
 package com.almasgali.news.data.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class RegisterResponse {
     private String message;
 }

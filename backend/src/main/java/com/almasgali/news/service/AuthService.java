@@ -33,7 +33,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public RegisterResponse signup(RegisterRequest request) {
+    public User signup(RegisterRequest request) {
 
         String email = request.getEmail();
 
@@ -48,9 +48,7 @@ public class AuthService {
                 .isAdmin(false)
                 .password(passwordEncoder.encode(request.getPassword())).build();
 
-        userRepository.save(user);
-        return RegisterResponse.builder()
-                .message("Пользователь успешно зарегистрирован.").build();
+        return userRepository.save(user);
     }
 
     public AuthResponse authenticate(AuthRequest request) {

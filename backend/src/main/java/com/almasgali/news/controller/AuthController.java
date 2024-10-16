@@ -28,8 +28,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerUserDto) {
-        RegisterResponse registerResponse = authenticationService.signup(registerUserDto);
-        return new ResponseEntity<>(registerResponse, HttpStatus.CREATED);
+        authenticationService.signup(registerUserDto);
+        return new ResponseEntity<>(new RegisterResponse("Пользователь успешно зарегистрирован."), HttpStatus.CREATED);
     }
 
     @PostMapping("/auth")

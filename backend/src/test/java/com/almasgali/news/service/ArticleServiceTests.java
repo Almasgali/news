@@ -2,7 +2,9 @@ package com.almasgali.news.service;
 
 import com.almasgali.news.data.dto.CommentRequest;
 import com.almasgali.news.data.dto.CommentResponse;
+import com.almasgali.news.data.dto.ThemeRequest;
 import com.almasgali.news.data.model.Article;
+import com.almasgali.news.data.model.Theme;
 import com.almasgali.news.data.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,43 @@ public class ArticleServiceTests extends CommonTests {
         List<CommentResponse> comments = articleService.getComments(1, p).getComments();
         Assertions.assertEquals(5, comments.size());
         Assertions.assertTrue(comments.stream().map(CommentResponse::getText).collect(Collectors.toList()).contains("B"));
+    }
+
+    @Test
+    @Transactional
+    public void testThemes() {
+        List<Theme> oldThemes = articleService.getThemes();
+        Assertions.assertEquals(3, oldThemes.size());
+        Assertions.assertTrue(oldThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("Фото"));
+        Assertions.assertFalse(oldThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("newTheme"));
+
+        ThemeRequest newTheme = new ThemeRequest();
+        newTheme.setName("newTheme");
+        articleService.addTheme(newTheme);
+        List<Theme> newThemes = articleService.getThemes();
+
+        Assertions.assertEquals(4, newThemes.size());
+        Assertions.assertTrue(newThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("newTheme"));
+
+        articleService.deleteTheme(1);
+        Assertions.assertFalse(articleService.getThemes().stream().map(Theme::getName).collect(Collectors.toSet()).contains("Фото"));
+    }
+
+    @Test
+    @Transactional
+    public void testArticleThemes() {
+        List<Theme> articleThemes = articleService.getArticleThemes(6);
+        Assertions.assertEquals(1, articleThemes.size());
+        Assertions.assertTrue(articleThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("Фото"));
+        Assertions.assertFalse(articleThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("Заработок"));
+
+        articleService.addThemeToArticle(6, 2);
+        articleService.deleteThemeFromArticle(6, 1);
+
+        List<Theme> newArticleThemes = articleService.getArticleThemes(6);
+        Assertions.assertEquals(1, newArticleThemes.size());
+        Assertions.assertTrue(newArticleThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("Заработок"));
+        Assertions.assertFalse(newArticleThemes.stream().map(Theme::getName).collect(Collectors.toSet()).contains("Фото"));
     }
 }
 
