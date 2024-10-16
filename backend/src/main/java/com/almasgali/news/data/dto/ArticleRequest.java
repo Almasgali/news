@@ -15,6 +15,5 @@ public class ArticleRequest {
     private String text;
     @NotBlank
     private String image;
-    @NotBlank
     private List<String> themes;
 }
