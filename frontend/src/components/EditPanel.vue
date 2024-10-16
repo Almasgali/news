@@ -43,7 +43,7 @@
                         v-model="themes"
                         :items="allThemes"
                         item-title="name"
-                        item-value="id"
+                        item-value="name"
                         multiple
                     />
                 </v-col>
@@ -126,37 +126,27 @@
                 let data = {
                     image: this.img,
                     title: this.title,
-                    text: this.text
+                    text: this.text,
+                    themes: this.themes
                 };
-                let before = this.$store.getters['news/getNewsById'].themes;
+                console.log(data);
                 if (this.$store.state.news.editNewsId) {
                     this.$store.dispatch('news/editNews', {
                         token: this.$store.state.person.person.token,
                         data: data
                     });
-                    if (before) {
-                        for (let i in before) {
-                            if (!this.themes.find(item => item === before[i].id)) {
-                                this.$store.dispatch('news/delThemesInNews', {
-                                    token: this.$store.state.person.person.token,
-                                    themeId: before[i].id
-                                });
-                            }
-                        }
-                    }
-                    for (let i in this.themes) {
-                        if (before && !before.find(item => item.id === this.themes[i])) {
-                            this.$store.dispatch('news/addThemesInNews', {
-                                token: this.$store.state.person.person.token,
-                                themeId: this.themes[i]
-                            });
-                        }
-                    }
                 } else {
                     this.$store.dispatch('news/createNews', {
                         token: this.$store.state.person.person.token,
                         data: data
                     });
+                }
+                let news = this.$store.state.news.news;
+                for (let i in news) {
+                    console.log(news[i].id);
+                    this.$store.dispatch('news/loadLikesFromServer', news[i].id);
+                    this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
+                    this.$store.dispatch('news/loadThemesFromServer', news[i].id);
                 }
                 this.$store.commit('news/setEditNewsId', null);
             },
