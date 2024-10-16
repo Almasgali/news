@@ -22,9 +22,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -64,15 +64,19 @@ public class User implements UserDetails {
     }
 
     public void addLikedArticle(Article article) {
+        initArticles();
         likedArticles.add(article);
     }
 
     public void removeLikedArticle(Article article) {
+        initArticles();
         likedArticles.remove(article);
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    private void initArticles() {
+        if (likedArticles == null) {
+            likedArticles = new HashSet<>();
+        }
     }
 
     @Override

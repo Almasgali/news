@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -58,22 +59,35 @@ public class Article {
     private Set<Theme> themes;
 
     public void addTheme(Theme theme) {
+        initThemes();
         themes.add(theme);
     }
 
     public void deleteTheme(Theme theme) {
+        initThemes();
         themes.remove(theme);
     }
 
+    private void initThemes() {
+        if (themes == null) {
+            themes = new HashSet<>();
+        }
+    }
+
     public void addLikedUser(User user) {
+        initUsers();
         likedUsers.add(user);
     }
 
     public void removeLikedUser(User user) {
+        initUsers();
         likedUsers.remove(user);
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    private void initUsers() {
+        if (likedUsers == null) {
+            likedUsers = new HashSet<>();
+        }
     }
+
 }

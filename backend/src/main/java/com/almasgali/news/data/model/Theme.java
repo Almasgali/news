@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -39,10 +40,18 @@ public class Theme {
     private Set<Article> articles;
 
     public void addArticle(Article article) {
+        initArticles();
         articles.add(article);
     }
 
     public void deleteArticle(Article article) {
+        initArticles();
         articles.remove(article);
+    }
+
+    private void initArticles() {
+        if (articles == null) {
+            articles = new HashSet<>();
+        }
     }
 }
