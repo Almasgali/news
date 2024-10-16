@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,4 +15,6 @@ public class ArticleRequest {
     private String text;
     @NotBlank
     private String image;
+    @NotBlank
+    private List<String> themes;
 }

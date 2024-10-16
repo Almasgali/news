@@ -136,6 +136,19 @@ public class ArticleService {
                 request.getText(),
                 request.getImage(),
                 LocalDateTime.now());
+
+        List<Theme> oldThemes = getArticleThemes(id);
+        for (Theme th : oldThemes) {
+            deleteThemeFromArticle(id, th.getId());
+        }
+
+        for (String th : request.getThemes()) {
+
+            Theme theme = themeRepository.findByName(th)
+                    .orElseThrow(NoSuchElementException::new);
+
+            addThemeToArticle(id, theme.getId());
+        }
     }
 
     public void deleteArticle(long id) {
@@ -143,12 +156,20 @@ public class ArticleService {
     }
 
     public void addArticle(ArticleRequest articleRequest) {
-        articleRepository.save(Article.builder()
+        Article article = articleRepository.save(Article.builder()
                 .title(articleRequest.getTitle())
                 .text(articleRequest.getText())
                 .image(articleRequest.getImage())
                 .date(LocalDateTime.now())
                 .build());
+
+        for (String th : articleRequest.getThemes()) {
+
+            Theme theme = themeRepository.findByName(th)
+                    .orElseThrow(NoSuchElementException::new);
+
+            addThemeToArticle(article.getId(), theme.getId());
+        }
     }
 
     public void addTheme(ThemeRequest request) {
