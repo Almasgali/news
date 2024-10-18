@@ -116,12 +116,12 @@
                       class="comments pl-16"
                     >
                         <v-col
-                          cols="12"
+                          cols="10"
                           class="text-body-2 pb-1"
                         >
                             {{ comment.text }}
                         </v-col>
-                        <v-col v-if="person.admin">
+                        <v-col>
                             <v-btn
                                 @click="delComment(item.id, comment.id)"
                                 icon="mdi-delete-outline"
