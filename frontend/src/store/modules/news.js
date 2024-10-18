@@ -194,12 +194,12 @@ export default {
         },
         addTheme({dispatch}, data) {
             fetch(`http://localhost:8080/news/themes`, {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${data.token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data.theme)
+                body: JSON.stringify({name: data.theme})
             })
                 .then(response => dispatch('loadAllThemesFromServer'))
         }

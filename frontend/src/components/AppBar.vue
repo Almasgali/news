@@ -5,10 +5,14 @@
       {{ name }}
       <v-btn
         v-if="show"
+        @click="settings"
+        icon="cog-outline"
+      />
+      <v-btn
+        v-if="show"
         @click="exit"
-      >
-        <v-icon icon="mdi-login"/>
-      </v-btn>
+        icon="mdi-login"
+      />
       <v-btn
         v-else
         :to="{name: 'authentication'}"
@@ -24,6 +28,11 @@
   import DialogYesNo from './DialogYesNo.vue'
 
   export default {
+    data() {
+      return {
+        showSettigs: false
+      }
+    },
     computed: {
       name() {
         let name = this.$store.getters['person/getFullName'];
@@ -43,6 +52,9 @@
       exit() {
         this.$store.commit('person/setMessage', {message: "Вы уверены, что хойтите выйти?"});
         this.$store.commit('person/changeDialogMessage');
+      },
+      settings() {
+        this.showSettigs = !this.showSettigs;
       }
     },
     components: {

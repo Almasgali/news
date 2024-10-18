@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePageViews from '../views/HomePageViews.vue'
 import AuthenticationPageViews from '../views/AuthenticationPageViews.vue'
 import RegistrationPageViews from '../views/RegistrationPageViews.vue'
-import EditPanel from '@/components/EditPanel.vue'
+import EditPanel from '../components/EditPanel.vue'
+import EditThemes from '../components/EditThemes.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/edit',
     name: 'edit',
     component: EditPanel
+  },
+  {
+    path: '/themes',
+    name: 'themes',
+    component: EditThemes
   }
 ]
 

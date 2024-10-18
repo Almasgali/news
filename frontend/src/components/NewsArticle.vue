@@ -1,12 +1,22 @@
 <template>
     <div>
-        <v-btn
-          v-if="person.admin"
-          @click="setEditNewsId(null)"
-          :to="{name: 'edit'}"
-        >
-            Создать статью
-        </v-btn>
+        <v-col>
+            <v-btn
+              v-if="person.admin"
+              @click="setEditNewsId(null)"
+              :to="{name: 'edit'}"
+            >
+                Создать статью
+            </v-btn>
+        </v-col>
+        <v-col>
+            <v-btn
+              v-if="person.admin"
+              :to="{name: 'themes'}"
+            >
+                Редактировать темы
+            </v-btn>
+        </v-col>
         <v-container
           v-for="item in news"
           :key="item.id"
