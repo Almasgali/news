@@ -124,6 +124,12 @@
       },
       saveSettings() {
         console.log(this.favouriteThemes, this.forbiddenThemes);
+        for (let i in this.favouriteThemes) {
+          this.$store.dispatch('person/addFavoriteTheme', this.favouriteThemes[i]);
+        }
+        for (let i in this.forbiddenThemes) {
+          this.$store.dispatch('person/addForbiddenTheme', this.forbiddenThemes[i]);
+        }
         this.showSettigs = !this.showSettigs;
       },
       exitSettings() {

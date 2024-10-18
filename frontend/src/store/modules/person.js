@@ -10,7 +10,9 @@ export default {
     validNameReg: /^([a-z]+|[а-яё]+)$/i,
     validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
     validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/,
-    dialogMessage: false
+    dialogMessage: false,
+    favouriteThemes: [],
+    forbiddenThemes: []
   },
   getters: {
     getFullName: state => {
@@ -96,6 +98,22 @@ export default {
       })
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
+    },
+    addFavoriteTheme({dispatch}, data) {
+      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+    },
+    addForbiddenTheme({dispatch}, data) {
+      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
     }
   }
 }

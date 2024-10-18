@@ -138,7 +138,7 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
-                .then(response => dispatch('loadNewsFromServer'))
+              .then(response => dispatch('loadNewsFromServer'))
         },
         delComment({dispatch}, data) {
             fetch(`http://localhost:8080/news/comments/${data.commentId}`, {
