@@ -96,6 +96,6 @@ export default {
       })
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
-    },
+    }
   }
 }

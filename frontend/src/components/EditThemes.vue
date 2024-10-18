@@ -50,6 +50,7 @@
                         :disabled="!addBtnDisabled"
                         @click="addTheme"
                         size="small"
+                        text="Добавить"
                     />
                 </v-col>
                 <v-spacer/>
@@ -89,6 +90,7 @@
                     token: this.$store.state.person.person.token,
                     theme: this.theme
                 });
+                this.theme = ''; 
             },
             delThemes() {
                 console.log(this.themesDel);
