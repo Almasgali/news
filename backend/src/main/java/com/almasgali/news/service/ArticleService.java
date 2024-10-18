@@ -179,6 +179,11 @@ public class ArticleService {
     }
 
     public void deleteTheme(long id) {
+        Theme theme = themeRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        for (Article a : theme.getArticles()) {
+            a.deleteTheme(theme);
+            articleRepository.save(a);
+        }
         themeRepository.deleteById(id);
     }
 
