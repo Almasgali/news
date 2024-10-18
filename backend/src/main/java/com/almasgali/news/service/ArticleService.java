@@ -195,8 +195,8 @@ public class ArticleService {
         List<Article> response = new ArrayList<>();
         for (Article a : getLatestNews()) {
             Set<Long> articleThemesIds = a.getThemes().stream().map(Theme::getId).collect(Collectors.toSet());
-            if (request.getMandatoryThemes() != null &&
-                    !articleThemesIds.containsAll(request.getMandatoryThemes())) {
+            if (request.getFavouriteThemes() != null &&
+                    !articleThemesIds.containsAll(request.getFavouriteThemes())) {
                 continue;
             }
             if (request.getForbiddenThemes() == null) {

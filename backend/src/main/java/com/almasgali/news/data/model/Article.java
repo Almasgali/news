@@ -43,7 +43,7 @@ public class Article {
     private Set<Comment> comments;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "article_like",
+            name = "article_likes",
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     @JsonIgnore
