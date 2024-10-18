@@ -117,7 +117,6 @@
                 return false;
             },
             allThemes() {
-                this.$store.dispatch('news/loadAllThemesFromServer');
                 return this.$store.state.news.allThemes;
             }
         },
@@ -129,7 +128,6 @@
                     text: this.text,
                     themes: this.themes
                 };
-                console.log(data);
                 if (this.$store.state.news.editNewsId) {
                     this.$store.dispatch('news/editNews', {
                         token: this.$store.state.person.person.token,
@@ -140,13 +138,6 @@
                         token: this.$store.state.person.person.token,
                         data: data
                     });
-                }
-                let news = this.$store.state.news.news;
-                for (let i in news) {
-                    console.log(news[i].id);
-                    this.$store.dispatch('news/loadLikesFromServer', news[i].id);
-                    this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
-                    this.$store.dispatch('news/loadThemesFromServer', news[i].id);
                 }
                 this.$store.commit('news/setEditNewsId', null);
             },

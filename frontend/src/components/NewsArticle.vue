@@ -281,6 +281,7 @@
                 this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
                 this.$store.dispatch('news/loadThemesFromServer', news[i].id);
             }
+            this.$store.dispatch('news/loadAllThemesFromServer');
         }
     }
 </script>

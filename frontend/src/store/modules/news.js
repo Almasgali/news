@@ -182,24 +182,6 @@ export default {
               .then(response => response.json())
               .then(responseJson => commit('addAllThemes', responseJson));
         },
-        // addThemesInNews({state}, data) {
-        //     fetch(`http://localhost:8080/news/${state.editNewsId}/themes?themeId=${data.themeId}`, {
-        //         method: 'PATCH',
-        //         headers: {
-        //             'Authorization': `Bearer ${data.token}`,
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
-        // },
-        // delThemesInNews({state}, data) {
-        //     fetch(`http://localhost:8080/news/${state.editNewsId}/themes?themeId=${data.themeId}`, {
-        //         method: 'DELETE',
-        //         headers: {
-        //             'Authorization': `Bearer ${data.token}`,
-        //             'Content-Type': 'application/json'
-        //         }
-        //     })
-        // },
         delTheme({dispatch}, data) {
             fetch(`http://localhost:8080/news/themes/${data.themeId}`, {
                 method: 'DELETE',
