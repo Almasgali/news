@@ -41,14 +41,14 @@ public class Article {
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Comment> comments;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "article_like",
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     @JsonIgnore
     private Set<User> likedUsers;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinTable(
             name = "article_themes",
