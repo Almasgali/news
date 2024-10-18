@@ -6,15 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +23,7 @@ public class Theme {
     private long id;
     @Getter
     private String name;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "article_themes",
-            joinColumns = @JoinColumn(name = "theme_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "themes", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Article> articles;
 

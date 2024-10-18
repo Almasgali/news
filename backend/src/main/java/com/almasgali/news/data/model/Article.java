@@ -9,16 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,11 +41,19 @@ public class Article {
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Comment> comments;
-    @ManyToMany(mappedBy = "likedArticles", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany
+    @JoinTable(
+            name = "article_like",
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     @JsonIgnore
     private Set<User> likedUsers;
-    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JsonIgnore
+    @JoinTable(
+            name = "article_themes",
+            inverseJoinColumns = @JoinColumn(name = "theme_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
     @Getter
     private Set<Theme> themes;
 
