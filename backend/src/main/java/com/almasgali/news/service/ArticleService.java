@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -193,27 +190,36 @@ public class ArticleService {
 
     public List<Article> filterArticlesByThemes(ArticleThemesRequest request) {
         List<Article> response = new ArrayList<>();
+
         for (Article a : getLatestNews()) {
-            Set<Long> articleThemesIds = a.getThemes().stream().map(Theme::getId).collect(Collectors.toSet());
-            if (request.getFavouriteThemes() != null &&
-                    !articleThemesIds.containsAll(request.getFavouriteThemes())) {
+            Set<Long> articleThemesIds = a.getThemes().stream()
+                    .map(Theme::getId)
+                    .collect(Collectors.toSet());
+
+            if (request.getForbiddenThemes() != null &&
+                    !Collections.disjoint(articleThemesIds, request.getForbiddenThemes())) {
                 continue;
             }
-            if (request.getForbiddenThemes() == null) {
-                response.add(a);
-                continue;
-            }
-            boolean forbidden = false;
-            for (long id : request.getForbiddenThemes()) {
-                if (articleThemesIds.contains(id)) {
-                    forbidden = true;
-                    break;
-                }
-            }
-            if (!forbidden) {
-                response.add(a);
-            }
+
+            response.add(a);
         }
+
+        if (request.getFavouriteThemes() != null) {
+            response.sort((a1, a2) -> {
+                long count1 = a1.getThemes().stream()
+                        .map(Theme::getId)
+                        .filter(request.getFavouriteThemes()::contains)
+                        .count();
+
+                long count2 = a2.getThemes().stream()
+                        .map(Theme::getId)
+                        .filter(request.getFavouriteThemes()::contains)
+                        .count();
+
+                return Long.compare(count2, count1);
+            });
+        }
+
         return response;
     }
 }
