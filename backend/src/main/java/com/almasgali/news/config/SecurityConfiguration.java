@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .antMatchers(HttpMethod.PATCH, "/news/*/likes*").authenticated()
                         .antMatchers(HttpMethod.PATCH, "/news/*/comments*").authenticated()
+                        .antMatchers("/user/themes/**").authenticated()
                         .anyRequest().permitAll())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer
