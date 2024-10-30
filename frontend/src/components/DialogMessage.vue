@@ -32,6 +32,8 @@
             link() {
                 if (this.message === "Пользователь успешно авторизован.") {
                     return 'home';
+                } else if (this.message === "Темы удалены" || this.message === "Тема добавлена") {
+                    return 'themes'
                 }
                 this.$store.commit('person/delPerson');
                 return 'authentication';

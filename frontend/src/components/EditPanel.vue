@@ -47,6 +47,13 @@
                         multiple
                     />
                 </v-col>
+                <v-col>
+                    <v-btn
+                      :to="{name: 'themes'}"
+                    >
+                        Редактировать темы
+                    </v-btn>
+                </v-col>
             </v-row>
             <v-row>
                 <v-col>

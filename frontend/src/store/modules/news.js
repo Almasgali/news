@@ -89,6 +89,7 @@ export default {
     },
     actions: {
         loadNewsFromServer ({commit}) {
+            console.log("load news")
             fetch('http://localhost:8080/news')
               .then(response => response.json())
               .then(responseJson => commit('addNews', responseJson));
@@ -202,6 +203,18 @@ export default {
                 body: JSON.stringify({name: data.theme})
             })
                 .then(response => dispatch('loadAllThemesFromServer'))
-        }
+        },
+        loadNewsFilterFromServer({commit}, data) {
+            console.log("data", data);
+            fetch(`http://localhost:8080/news/themes/filter`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+              .then(response => response.json())
+              .then(responseJson => commit('addNews', responseJson));
+        },
     }
 }

@@ -11,6 +11,7 @@ export default {
     validEmailReg: /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*\@[-a-z]+\.[a-z]{2,}$/i,
     validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/,
     dialogMessage: false,
+    dialogYesNo: false,
     favouriteThemes: [],
     forbiddenThemes: []
   },
@@ -41,6 +42,20 @@ export default {
     },
     getBullToken: state => {
       return state.person.token;
+    },
+    getIdThemes: state => {
+      let favouriteThemes = [];
+      let forbiddenThemes = [];
+      state.favouriteThemes.forEach(el => {
+        favouriteThemes.push(el.id);
+      });
+      state.forbiddenThemes.forEach(el => {
+        forbiddenThemes.push(el.id);
+      });
+      return {
+        favouriteThemes: favouriteThemes,
+        forbiddenThemes: forbiddenThemes
+      }
     }
   },
   mutations: {
@@ -74,6 +89,17 @@ export default {
     },
     changeDialogMessage: (state) => {
       state.dialogMessage = !state.dialogMessage;
+    },
+    changeDialogYesNo: (state) => {
+      state.dialogYesNo = !state.dialogYesNo;
+    },
+    setFavouriteThemes: (state, data) => {
+      console.log("fav", data);
+      state.favouriteThemes = data;
+    },
+    setForbiddenThemes: (state, data) => {
+      console.log("for", data);
+      state.forbiddenThemes = data;
     }
   },
   actions: {
@@ -88,7 +114,7 @@ export default {
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
     },
-    sendAuthInfoToServer({commit}, data) {
+    sendAuthInfoToServer({commit, dispatch}, data) {
       fetch(`http://localhost:8080/user/auth`, {
         method: 'POST',
         headers: {
@@ -97,20 +123,72 @@ export default {
         body: JSON.stringify(data)
       })
         .then(response => response.json())
-        .then(responseJson => commit('setMessage', responseJson))
+        .then(responseJson => {
+          commit('setMessage', responseJson)
+          dispatch('getFavouriteThemes')
+          dispatch('getForbiddenThemes')
+        })
     },
-    addFavoriteTheme({dispatch}, data) {
-      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data}`, {
+    getFavouriteThemes({state, commit}) {
+      console.log("get fav");
+      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}`, {
+        headers: {
+          'Authorization': `Bearer ${state.person.token}`,
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(response => response.json())
+        .then(responseJson => commit('setFavouriteThemes', responseJson))
+    },
+    getForbiddenThemes({state, commit}) {
+      console.log("get for");
+      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}`, {
+        headers: {
+          'Authorization': `Bearer ${state.person.token}`,
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(response => response.json())
+        .then(responseJson => commit('setForbiddenThemes', responseJson))
+    },
+    addFavouriteTheme({state, dispatch}, data) {
+      console.log("add fav", data.theme);
+      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
         method: 'PATCH',
         headers: {
+          'Authorization': `Bearer ${state.person.token}`,
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        // .then(response => dispatch('getFavouriteThemes'))
+    },
+    addForbiddenTheme({state, dispatch}, data) {
+      console.log("add for", data.theme);
+      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${state.person.token}`,
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        // .then(response => dispatch('getForbiddenThemes'))
+    },
+    delFavouriteTheme({state, dispatch}, data) {
+      console.log("del fav", data.theme);
+      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
         }
       })
     },
-    addForbiddenTheme({dispatch}, data) {
-      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data}`, {
-        method: 'PATCH',
+    delForbiddenTheme({state, dispatch}, data) {
+      console.log("del for", data.theme);
+      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
+        method: 'DELETE',
         headers: {
+          'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
         }
       })

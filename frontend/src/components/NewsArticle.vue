@@ -1,22 +1,28 @@
 <template>
     <div>
-        <v-col>
-            <v-btn
-              v-if="person.admin"
-              @click="setEditNewsId(null)"
-              :to="{name: 'edit'}"
-            >
-                Создать статью
-            </v-btn>
-        </v-col>
-        <v-col>
-            <v-btn
-              v-if="person.admin"
-              :to="{name: 'themes'}"
-            >
-                Редактировать темы
-            </v-btn>
-        </v-col>
+    {{ this.$store.state.person.favouriteThemes }}
+    {{ this.$store.state.person.forbiddenThemes }}
+        <v-row class="mb-3">
+            <v-spacer/>
+            <v-col>
+                <v-btn
+                v-show="person.admin"
+                @click="setEditNewsId(null)"
+                :to="{name: 'edit'}"
+                >
+                    Создать статью
+                </v-btn>
+            </v-col>
+            <v-col>
+                <v-btn
+                v-show="person.admin"
+                :to="{name: 'themes'}"
+                >
+                    Редактировать темы
+                </v-btn>
+            </v-col>
+            <v-spacer/>
+        </v-row>
         <v-container
           v-for="item in news"
           :key="item.id"
@@ -282,10 +288,24 @@
             }
         },
         created() {
-            this.$store.dispatch('news/loadNewsFromServer');
+            console.log("news", this.$store.state.news.news);
+            console.log("person", this.$store.state.person.person);
+            if (this.$store.state.person.person.id && !this.$store.state.person.person.admin) {
+                // this.$store.dispatch('person/getFavouriteThemes');
+                // this.$store.dispatch('person/getForbiddenThemes'); 
+
+                this.$store.dispatch('news/loadNewsFilterFromServer', 
+                this.$store.getters['person/getIdThemes']
+                )
+            } else {
+                this.$store.dispatch('news/loadNewsFromServer');
+            }
+            console.log("news", this.$store.state.news.news);
         },
-        updated() {
+        updated() { 
+            console.log("updated")
             let news = this.$store.state.news.news;
+            console.log("news", news);
             for (let i in news) {
                 this.$store.dispatch('news/loadLikesFromServer', news[i].id);
                 this.$store.dispatch('news/loadCommentsFromServer', news[i].id);

@@ -27,7 +27,7 @@
     export default {
         computed: {
             dialog() {
-                return this.$store.state.person.dialogMessage;
+                return this.$store.state.person.dialogYesNo;
             },
             message() {
                 return this.$store.state.person.message;
@@ -35,15 +35,16 @@
         },
         methods: {
             changeDialog() {
-                this.$store.commit('person/changeDialogMessage');
+                this.$store.commit('person/changeDialogYesNo');
             },
             changeDialogExit() {
                 if (this.message === "Вы уверены, что хойтите выйти?") {
                     this.$store.commit('person/delPerson');
+                    this.$store.dispatch('news/loadNewsFromServer');
                 } else {
                     this.$router.push({name: 'home'});
                 }
-                this.$store.commit('person/changeDialogMessage');
+                this.$store.commit('person/changeDialogYesNo');
             }
         }
     }
