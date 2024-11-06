@@ -128,37 +128,46 @@
         this.$store.commit('person/changeDialogYesNo');
       },
       settings() {
-        console.log(this.showSettings)
+        console.log(this.showSettings);
+        (async () => {
+          await this.$store.dispatch('person/getFavouriteThemes')
+          await this.$store.dispatch('person/getForbiddenThemes')
+        })();
+        this.newFavouriteThemes = this.$store.state.person.favouriteThemes,
+        this.newForbiddenThemes = this.$store.state.person.forbiddenThemes
         this.showSettings = !this.showSettings;
       },
       saveSettings() {
         console.log("save settings");
-        let favouriteThemes = this.$store.state.person.favouriteThemes;
-        let forbiddenThemes = this.$store.state.person.forbiddenThemes;
+        (async () => {
+          await this.$store.dispatch('person/getFavouriteThemes')
+          await this.$store.dispatch('person/getForbiddenThemes')
+          
+          let favouriteThemes = this.$store.state.person.favouriteThemes;
+          let forbiddenThemes = this.$store.state.person.forbiddenThemes;
 
-        console.log("new fav", this.newFavouriteThemes);
-        console.log("new for", this.newForbiddenThemes);
-        console.log("old fav", favouriteThemes);
-        console.log("old for", forbiddenThemes);
+          console.log("new fav", this.newFavouriteThemes);
+          console.log("new for", this.newForbiddenThemes);
+          console.log("old fav", favouriteThemes);
+          console.log("old for", forbiddenThemes)
 
-        for (let i in favouriteThemes) {
-          this.$store.dispatch('person/delFavouriteTheme', {theme: favouriteThemes[i].name});
-        }
-        for (let i in this.newFavouriteThemes) {
-          this.$store.dispatch('person/addFavouriteTheme', {theme: this.newFavouriteThemes[i].name});
-        }
-        for (let i in forbiddenThemes) {
-            this.$store.dispatch('person/delForbiddenTheme', {theme: forbiddenThemes[i].name});
-        }
-        for (let i in this.newForbiddenThemes) {
-          this.$store.dispatch('person/addForbiddenTheme', {theme: this.newForbiddenThemes[i].name});
-        }
-        this.$store.dispatch('person/getFavouriteThemes');
-        this.$store.dispatch('person/getForbiddenThemes'); 
-
-        // this.$store.dispatch('news/loadNewsFilterFromServer', 
-        //   this.$store.getters['person/getIdThemes']
-        // )
+          for (let i in favouriteThemes) {
+            await this.$store.dispatch('person/delFavouriteTheme', {theme: favouriteThemes[i].name});
+          }
+          for (let i in this.newFavouriteThemes) {
+            await this.$store.dispatch('person/addFavouriteTheme', {theme: this.newFavouriteThemes[i].name});
+          }
+          for (let i in forbiddenThemes) {
+            await this.$store.dispatch('person/delForbiddenTheme', {theme: forbiddenThemes[i].name});
+          }
+          for (let i in this.newForbiddenThemes) {
+            await this.$store.dispatch('person/addForbiddenTheme', {theme: this.newForbiddenThemes[i].name});
+          }
+          await this.$store.dispatch('person/getFavouriteThemes')
+          await this.$store.dispatch('person/getForbiddenThemes')
+          await this.$store.dispatch('news/loadNewsFilterFromServer',
+            this.$store.getters['person/getIdThemes']);
+        })();
         this.showSettings = !this.showSettings;
       },
       exitSettings() {

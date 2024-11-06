@@ -68,6 +68,7 @@ export default {
       state.person.password = data.password;
     },
     setMessage: (state, data) => {
+      console.log("add person");
       if (data.id) {
         state.message = data.message;
         state.person.id = data.id;
@@ -114,7 +115,7 @@ export default {
         .then(response => response.json())
         .then(responseJson => commit('setMessage', responseJson))
     },
-    sendAuthInfoToServer({commit, dispatch}, data) {
+    sendAuthInfoToServer({commit, dispatch, getters}, data) {
       fetch(`http://localhost:8080/user/auth`, {
         method: 'POST',
         headers: {
@@ -123,15 +124,14 @@ export default {
         body: JSON.stringify(data)
       })
         .then(response => response.json())
-        .then(responseJson => {
-          commit('setMessage', responseJson)
-          dispatch('getFavouriteThemes')
-          dispatch('getForbiddenThemes')
-        })
+        .then(responseJson => commit('setMessage', responseJson))
+        .then(() => dispatch('getFavouriteThemes'))
+        .then(() => dispatch('getForbiddenThemes'))
+        .then(() => dispatch('news/loadNewsFilterFromServer', getters['getIdThemes'], { root: true }))
     },
     getFavouriteThemes({state, commit}) {
       console.log("get fav");
-      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}`, {
+      return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}`, {
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
@@ -142,7 +142,7 @@ export default {
     },
     getForbiddenThemes({state, commit}) {
       console.log("get for");
-      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}`, {
+      return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}`, {
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
@@ -153,29 +153,27 @@ export default {
     },
     addFavouriteTheme({state, dispatch}, data) {
       console.log("add fav", data.theme);
-      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
+      return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
         }
       })
-        // .then(response => dispatch('getFavouriteThemes'))
     },
     addForbiddenTheme({state, dispatch}, data) {
       console.log("add for", data.theme);
-      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
+      return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
           'Content-Type': 'application/json;charset=utf-8'
         }
       })
-        // .then(response => dispatch('getForbiddenThemes'))
     },
     delFavouriteTheme({state, dispatch}, data) {
       console.log("del fav", data.theme);
-      fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
+      return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
@@ -185,7 +183,7 @@ export default {
     },
     delForbiddenTheme({state, dispatch}, data) {
       console.log("del for", data.theme);
-      fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
+      return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${state.person.token}`,

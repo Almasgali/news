@@ -57,7 +57,7 @@ export default {
             state.news.find(item => item.id === id).showFullText = !val;
         },
         addComments: (state, payload) => {
-            if (!state.news.find(item => item.id === payload.id).comments || payload.data.currentPage === 0) {
+            if (state.news.find(item => item.id === payload.id).comments == false || payload.data.currentPage === 0) {
                 state.news.find(item => item.id === payload.id).comments = [];
             }
             for (let i in payload.data.comments) {
@@ -206,7 +206,7 @@ export default {
         },
         loadNewsFilterFromServer({commit}, data) {
             console.log("data", data);
-            fetch(`http://localhost:8080/news/themes/filter`, {
+            return fetch(`http://localhost:8080/news/themes/filter`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

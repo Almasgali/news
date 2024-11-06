@@ -1,7 +1,8 @@
 <template>
     <div>
-    {{ this.$store.state.person.favouriteThemes }}
-    {{ this.$store.state.person.forbiddenThemes }}
+    {{ this.$store.state.person.favouriteThemes }}<br>
+    {{ this.$store.state.person.forbiddenThemes }}<br>
+    <!-- {{ this.$store.state.news.news }} -->
         <v-row class="mb-3">
             <v-spacer/>
             <v-col>
@@ -288,16 +289,21 @@
             }
         },
         created() {
+            console.log("created");
             console.log("news", this.$store.state.news.news);
             console.log("person", this.$store.state.person.person);
             if (this.$store.state.person.person.id && !this.$store.state.person.person.admin) {
-                // this.$store.dispatch('person/getFavouriteThemes');
-                // this.$store.dispatch('person/getForbiddenThemes'); 
-
-                this.$store.dispatch('news/loadNewsFilterFromServer', 
-                this.$store.getters['person/getIdThemes']
-                )
+                console.log("yes");
+                (async () => {
+                    await this.$store.dispatch('person/getFavouriteThemes')
+                    await this.$store.dispatch('person/getForbiddenThemes')
+                    await this.$store.dispatch('news/loadNewsFilterFromServer',
+                        this.$store.getters['person/getIdThemes']);
+                })();
+                console.log("fav", this.$store.state.person.favouriteThemes);
+                console.log("for", this.$store.state.person.forbiddenThemes);
             } else {
+                console.log("no");
                 this.$store.dispatch('news/loadNewsFromServer');
             }
             console.log("news", this.$store.state.news.news);
@@ -306,11 +312,13 @@
             console.log("updated")
             let news = this.$store.state.news.news;
             console.log("news", news);
-            for (let i in news) {
-                this.$store.dispatch('news/loadLikesFromServer', news[i].id);
-                this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
-                this.$store.dispatch('news/loadThemesFromServer', news[i].id);
-            }
+            (async () => {
+                for (let i in news) {
+                    await this.$store.dispatch('news/loadLikesFromServer', news[i].id);
+                    await this.$store.dispatch('news/loadCommentsFromServer', news[i].id);
+                    await this.$store.dispatch('news/loadThemesFromServer', news[i].id);
+                }
+            })();
             this.$store.dispatch('news/loadAllThemesFromServer');
         }
     }
