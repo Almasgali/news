@@ -4,9 +4,9 @@
             <v-container class="container">
                 <v-row>
                     <v-btn
-                        :to="{name: 'home'}"
-                        icon="mdi-arrow-left"
-                        variant="text"
+                      :to="{name: 'home'}"
+                      icon="mdi-arrow-left"
+                      variant="text"
                     />
                 </v-row>
                 <v-row>
@@ -19,28 +19,28 @@
                 <v-row justify="center">
                     <v-col>
                         <v-text-field
-                        v-model="person.email"
-                        :rules="rules.errorEmail"
-                        type="email" 
-                        label="Email"
+                          v-model="person.email"
+                          :rules="rules.errorEmail"
+                          type="email" 
+                          label="Email"
                         />
                     </v-col>
                 </v-row>
                 <v-row justify="center">
                     <v-col>
                         <v-text-field
-                        v-model="person.password"
-                        :rules="rules.errorPassword"
-                        type="password"
-                        label="Пароль"
+                          v-model="person.password"
+                          :rules="rules.errorPassword"
+                          type="password"
+                          label="Пароль"
                         />
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
                         <v-btn
-                        :disabled="bntDisabled"
-                        @click="authentication"
+                          :disabled="bntDisabled"
+                          @click="authentication"
                         >
                             Войти
                         </v-btn>
@@ -49,8 +49,8 @@
                 <v-row justify="end">
                     <v-col cols="6">
                         <router-link 
-                        :to="{name: 'registration'}"
-                        @click="clearPerson"
+                          :to="{name: 'registration'}"
+                          @click="clearPerson"
                         >
                             Нет аккаунта? Создать
                         </router-link>

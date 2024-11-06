@@ -89,7 +89,6 @@ export default {
     },
     actions: {
         loadNewsFromServer ({commit}) {
-            console.log("load news")
             fetch('http://localhost:8080/news')
               .then(response => response.json())
               .then(responseJson => commit('addNews', responseJson));
@@ -205,7 +204,6 @@ export default {
                 .then(response => dispatch('loadAllThemesFromServer'))
         },
         loadNewsFilterFromServer({commit}, data) {
-            console.log("data", data);
             return fetch(`http://localhost:8080/news/themes/filter`, {
                 method: 'PUT',
                 headers: {

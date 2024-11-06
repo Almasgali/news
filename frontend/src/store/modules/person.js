@@ -12,6 +12,7 @@ export default {
     validPasswordReg: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/,
     dialogMessage: false,
     dialogYesNo: false,
+    dialogSettings: false,
     favouriteThemes: [],
     forbiddenThemes: []
   },
@@ -68,7 +69,6 @@ export default {
       state.person.password = data.password;
     },
     setMessage: (state, data) => {
-      console.log("add person");
       if (data.id) {
         state.message = data.message;
         state.person.id = data.id;
@@ -94,12 +94,13 @@ export default {
     changeDialogYesNo: (state) => {
       state.dialogYesNo = !state.dialogYesNo;
     },
+    changeDialogSettings: (state) => {
+      state.dialogSettings = !state.dialogSettings;
+    },
     setFavouriteThemes: (state, data) => {
-      console.log("fav", data);
       state.favouriteThemes = data;
     },
     setForbiddenThemes: (state, data) => {
-      console.log("for", data);
       state.forbiddenThemes = data;
     }
   },
@@ -130,7 +131,6 @@ export default {
         .then(() => dispatch('news/loadNewsFilterFromServer', getters['getIdThemes'], { root: true }))
     },
     getFavouriteThemes({state, commit}) {
-      console.log("get fav");
       return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}`, {
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
@@ -141,7 +141,6 @@ export default {
         .then(responseJson => commit('setFavouriteThemes', responseJson))
     },
     getForbiddenThemes({state, commit}) {
-      console.log("get for");
       return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}`, {
         headers: {
           'Authorization': `Bearer ${state.person.token}`,
@@ -152,7 +151,6 @@ export default {
         .then(responseJson => commit('setForbiddenThemes', responseJson))
     },
     addFavouriteTheme({state, dispatch}, data) {
-      console.log("add fav", data.theme);
       return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
         method: 'PATCH',
         headers: {
@@ -162,7 +160,6 @@ export default {
       })
     },
     addForbiddenTheme({state, dispatch}, data) {
-      console.log("add for", data.theme);
       return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
         method: 'PATCH',
         headers: {
@@ -172,7 +169,6 @@ export default {
       })
     },
     delFavouriteTheme({state, dispatch}, data) {
-      console.log("del fav", data.theme);
       return fetch(`http://localhost:8080/user/themes/favourite/${state.person.id}?themeName=${data.theme}`, {
         method: 'DELETE',
         headers: {
@@ -182,7 +178,6 @@ export default {
       })
     },
     delForbiddenTheme({state, dispatch}, data) {
-      console.log("del for", data.theme);
       return fetch(`http://localhost:8080/user/themes/forbidden/${state.person.id}?themeName=${data.theme}`, {
         method: 'DELETE',
         headers: {

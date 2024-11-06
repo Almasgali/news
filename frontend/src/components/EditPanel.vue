@@ -3,9 +3,9 @@
         <v-container>
             <v-row>
                 <v-btn
-                    icon="mdi-arrow-left"
-                    variant="text"
-                    @click="exit"
+                  icon="mdi-arrow-left"
+                  variant="text"
+                  @click="exit"
                 />
             </v-row>
             <v-row>
@@ -25,26 +25,26 @@
                 </v-col>
                 <v-col>
                     <v-textarea
-                        label="Заголовок"
-                        variant="outlined"
-                        :rules="rules.title"
-                        :counter="255"
-                        v-model="title"
-                        :model-value="title"
-                        clearable
+                      label="Заголовок"
+                      variant="outlined"
+                      :rules="rules.title"
+                      :counter="255"
+                      v-model="title"
+                      :model-value="title"
+                      clearable
                     />
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-select
-                        label="Темы"
-                        :rules="rules.themes"
-                        v-model="themes"
-                        :items="allThemes"
-                        item-title="name"
-                        item-value="name"
-                        multiple
+                      label="Темы"
+                      :rules="rules.themes"
+                      v-model="themes"
+                      :items="allThemes"
+                      item-title="name"
+                      item-value="name"
+                      multiple
                     />
                 </v-col>
                 <v-col>
@@ -58,23 +58,23 @@
             <v-row>
                 <v-col>
                     <v-textarea
-                        label="Текст статьи"
-                        variant="outlined"
-                        :rules="rules.text"
-                        v-model="text"
-                        :model-value="text"
-                        clearable
-                        rows="5"
-                        no-resize
+                      label="Текст статьи"
+                      variant="outlined"
+                      :rules="rules.text"
+                      v-model="text"
+                      :model-value="text"
+                      clearable
+                      rows="5"
+                      no-resize
                     />
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="4">
                     <v-btn
-                        :disabled="!btnDisabled"
-                        :to="{name: 'home'}"
-                        @click="saveNews"
+                      :disabled="!btnDisabled"
+                      :to="{name: 'home'}"
+                      @click="saveNews"
                     >
                         Сохранить изменения
                     </v-btn>

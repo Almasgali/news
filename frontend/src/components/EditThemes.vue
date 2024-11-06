@@ -3,9 +3,9 @@
         <v-container>
             <v-row>
                 <v-btn
-                    icon="mdi-arrow-left"
-                    variant="text"
-                    @click="exit"
+                  icon="mdi-arrow-left"
+                  variant="text"
+                  @click="exit"
                 />
             </v-row>
             <v-row>
@@ -17,12 +17,12 @@
                 <v-spacer/>
                 <v-col cols="5">
                     <v-select
-                        label="Темы"
-                        v-model="themesDel"
-                        :items="allThemes"
-                        item-title="name"
-                        item-value="id"
-                        multiple
+                      label="Темы"
+                      v-model="themesDel"
+                      :items="allThemes"
+                      item-title="name"
+                      item-value="id"
+                      multiple
                     />
                 </v-col>
                 <v-col>
@@ -47,10 +47,10 @@
                 </v-col>
                 <v-col>
                     <v-btn
-                        :disabled="!addBtnDisabled"
-                        @click="addTheme"
-                        size="small"
-                        text="Добавить"
+                      :disabled="!addBtnDisabled"
+                      @click="addTheme"
+                      size="small"
+                      text="Добавить"
                     />
                 </v-col>
                 <v-spacer/>

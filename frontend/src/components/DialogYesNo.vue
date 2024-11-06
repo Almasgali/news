@@ -42,6 +42,9 @@
                     this.$store.commit('person/delPerson');
                     this.$store.dispatch('news/loadNewsFromServer');
                 } else {
+                    if (this.$store.state.person.dialogSettings) {
+                        this.$store.commit('person/changeDialogSettings')
+                    }
                     this.$router.push({name: 'home'});
                 }
                 this.$store.commit('person/changeDialogYesNo');

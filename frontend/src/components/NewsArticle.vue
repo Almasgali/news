@@ -1,23 +1,20 @@
 <template>
     <div>
-    {{ this.$store.state.person.favouriteThemes }}<br>
-    {{ this.$store.state.person.forbiddenThemes }}<br>
-    <!-- {{ this.$store.state.news.news }} -->
         <v-row class="mb-3">
             <v-spacer/>
             <v-col>
                 <v-btn
-                v-show="person.admin"
-                @click="setEditNewsId(null)"
-                :to="{name: 'edit'}"
+                  v-show="person.admin"
+                  @click="setEditNewsId(null)"
+                  :to="{name: 'edit'}"
                 >
                     Создать статью
                 </v-btn>
             </v-col>
             <v-col>
                 <v-btn
-                v-show="person.admin"
-                :to="{name: 'themes'}"
+                  v-show="person.admin"
+                  :to="{name: 'themes'}"
                 >
                     Редактировать темы
                 </v-btn>
@@ -104,21 +101,21 @@
                         <v-row>
                             <v-col>
                                 <v-btn
-                                    @click="delNews(item.id)"
-                                    icon="mdi-delete-outline"
-                                    size="small"
-                                    elevation="0"                                
+                                  @click="delNews(item.id)"
+                                  icon="mdi-delete-outline"
+                                  size="small"
+                                  elevation="0"                                
                                 />
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
                                 <v-btn
-                                    @click="setEditNewsId(item.id)"
-                                    :to="{name: 'edit'}"
-                                    icon="mdi-pencil"
-                                    size="small"
-                                    elevation="0"
+                                  @click="setEditNewsId(item.id)"
+                                  :to="{name: 'edit'}"
+                                  icon="mdi-pencil"
+                                  size="small"
+                                  elevation="0"
                                 />
                             </v-col>
                         </v-row>
@@ -140,10 +137,10 @@
                         </v-col>
                         <v-col>
                             <v-btn
-                                @click="delComment(item.id, comment.id)"
-                                icon="mdi-delete-outline"
-                                size="small"
-                                elevation="0"
+                              @click="delComment(item.id, comment.id)"
+                              icon="mdi-delete-outline"
+                              size="small"
+                              elevation="0"
                             />
                         </v-col>
                         <v-col
@@ -289,29 +286,19 @@
             }
         },
         created() {
-            console.log("created");
-            console.log("news", this.$store.state.news.news);
-            console.log("person", this.$store.state.person.person);
             if (this.$store.state.person.person.id && !this.$store.state.person.person.admin) {
-                console.log("yes");
                 (async () => {
                     await this.$store.dispatch('person/getFavouriteThemes')
                     await this.$store.dispatch('person/getForbiddenThemes')
                     await this.$store.dispatch('news/loadNewsFilterFromServer',
                         this.$store.getters['person/getIdThemes']);
                 })();
-                console.log("fav", this.$store.state.person.favouriteThemes);
-                console.log("for", this.$store.state.person.forbiddenThemes);
             } else {
-                console.log("no");
                 this.$store.dispatch('news/loadNewsFromServer');
             }
-            console.log("news", this.$store.state.news.news);
         },
         updated() { 
-            console.log("updated")
             let news = this.$store.state.news.news;
-            console.log("news", news);
             (async () => {
                 for (let i in news) {
                     await this.$store.dispatch('news/loadLikesFromServer', news[i].id);

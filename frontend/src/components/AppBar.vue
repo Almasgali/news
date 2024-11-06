@@ -20,85 +20,17 @@
         Войти
       </v-btn>
     </v-app-bar>
-    <v-dialog
-      v-model="showSettings"
-      width="auto"
-      class="pa-4 text-center"
-    >
-      <v-card
-        max-width="600"
-      >
-        <v-row class="px-4 ma-4">
-          <v-col>
-            Выберите любимые темы
-          </v-col>
-        </v-row>
-        <v-row class="mx-4">
-          <v-col>
-            <v-select
-            label="Темы"
-            v-model="newFavouriteThemes"
-            :items="allThemes"
-            item-title="name"
-            return-object
-            multiple
-          />
-          </v-col>
-        </v-row>
-        <v-row class="px-4 ma-4">
-          <v-col>
-            Выберите запретные темы, статьи с выбранными темами отображаться не будут
-          </v-col>
-        </v-row>
-        <v-row class="mx-4">
-          <v-col>
-            <v-select
-            label="Темы"
-            v-model="newForbiddenThemes"
-            :items="allThemes"
-            item-title="name"
-            return-object
-            multiple
-          />
-          </v-col>
-        </v-row>
-        <template v-slot:actions>
-          <v-btn
-            :disabled="btnDisabled"
-            text="Сохранить"
-            @click="saveSettings"
-          />
-          <v-btn
-            text="Отмена"
-            @click="exitSettings"
-          />
-        </template>
-      </v-card>
-    </v-dialog>
     <DialogYesNo/>
+    <DialogSettings/>
   </div>
 </template>
 
 <script>
   import DialogYesNo from './DialogYesNo.vue'
+  import DialogSettings from './DialogSettings.vue';
 
   export default {
-    data() {
-      return {
-        showSettings: false,
-        newFavouriteThemes: this.$store.state.person.favouriteThemes,
-        newForbiddenThemes: this.$store.state.person.forbiddenThemes
-      }
-    },
     computed: {
-      btnDisabled() {
-        for (let i in this.newFavouriteThemes) {
-          if (this.newForbiddenThemes.find(item => item.name == this.newFavouriteThemes[i].name)) {
-            return true;
-          }
-        }
-        return false;
-      },
       name() {
         let name = this.$store.getters['person/getFullName'];
         if (name !== `${undefined} ${undefined}`) {
@@ -117,9 +49,6 @@
           return !this.$store.state.person.person.admin;
         }
         return false;
-      },
-      allThemes() {
-        return this.$store.state.news.allThemes;
       }
     },
     methods: {
@@ -128,55 +57,12 @@
         this.$store.commit('person/changeDialogYesNo');
       },
       settings() {
-        console.log(this.showSettings);
-        (async () => {
-          await this.$store.dispatch('person/getFavouriteThemes')
-          await this.$store.dispatch('person/getForbiddenThemes')
-        })();
-        this.newFavouriteThemes = this.$store.state.person.favouriteThemes,
-        this.newForbiddenThemes = this.$store.state.person.forbiddenThemes
-        this.showSettings = !this.showSettings;
-      },
-      saveSettings() {
-        console.log("save settings");
-        (async () => {
-          await this.$store.dispatch('person/getFavouriteThemes')
-          await this.$store.dispatch('person/getForbiddenThemes')
-          
-          let favouriteThemes = this.$store.state.person.favouriteThemes;
-          let forbiddenThemes = this.$store.state.person.forbiddenThemes;
-
-          console.log("new fav", this.newFavouriteThemes);
-          console.log("new for", this.newForbiddenThemes);
-          console.log("old fav", favouriteThemes);
-          console.log("old for", forbiddenThemes)
-
-          for (let i in favouriteThemes) {
-            await this.$store.dispatch('person/delFavouriteTheme', {theme: favouriteThemes[i].name});
-          }
-          for (let i in this.newFavouriteThemes) {
-            await this.$store.dispatch('person/addFavouriteTheme', {theme: this.newFavouriteThemes[i].name});
-          }
-          for (let i in forbiddenThemes) {
-            await this.$store.dispatch('person/delForbiddenTheme', {theme: forbiddenThemes[i].name});
-          }
-          for (let i in this.newForbiddenThemes) {
-            await this.$store.dispatch('person/addForbiddenTheme', {theme: this.newForbiddenThemes[i].name});
-          }
-          await this.$store.dispatch('person/getFavouriteThemes')
-          await this.$store.dispatch('person/getForbiddenThemes')
-          await this.$store.dispatch('news/loadNewsFilterFromServer',
-            this.$store.getters['person/getIdThemes']);
-        })();
-        this.showSettings = !this.showSettings;
-      },
-      exitSettings() {
-        this.$store.commit('person/setMessage', {message: "Вы уверены, что хойтите выйти? Изменения не сохранятся"});
-        this.showSettings = !this.showSettings;
-        }
+        this.$store.commit('person/changeDialogSettings');
+      }
     },
     components: {
-      DialogYesNo
+      DialogYesNo,
+      DialogSettings
     }
   }
 </script>

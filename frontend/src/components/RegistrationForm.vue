@@ -4,9 +4,9 @@
             <v-container class="container">
                 <v-row>
                     <v-btn
-                        :to="{name: 'authentication'}"
-                        icon="mdi-arrow-left"
-                        variant="text"
+                      :to="{name: 'authentication'}"
+                      icon="mdi-arrow-left"
+                      variant="text"
                     />
                 </v-row>
                 <v-row>
@@ -17,46 +17,46 @@
                 <v-row justify="center">
                     <v-col>
                         <v-text-field
-                        v-model="person.name"
-                        :rules="rules.errorName"
-                        type="text" 
-                        label="Имя"
+                          v-model="person.name"
+                          :rules="rules.errorName"
+                          type="text" 
+                          label="Имя"
                         />
                     </v-col>
                     <v-col>
                         <v-text-field
-                        v-model="person.surname"
-                        :rules="rules.errorSurname"
-                        type="text" 
-                        label="Фамилия"
-                        />
-                    </v-col>
-                </v-row>
-                <v-row justify="center">
-                    <v-col>
-                        <v-text-field
-                        v-model="person.email" 
-                        :rules="rules.errorEmail"
-                        type="email" 
-                        label="Email"
+                          v-model="person.surname"
+                          :rules="rules.errorSurname"
+                          type="text" 
+                          label="Фамилия"
                         />
                     </v-col>
                 </v-row>
                 <v-row justify="center">
                     <v-col>
                         <v-text-field
-                        v-model="person.password"
-                        :rules="rules.errorPassword"
-                        type="password" 
-                        label="Пароль"
+                          v-model="person.email" 
+                          :rules="rules.errorEmail"
+                          type="email" 
+                          label="Email"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <v-text-field
+                          v-model="person.password"
+                          :rules="rules.errorPassword"
+                          type="password" 
+                          label="Пароль"
                         />
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
                         <v-btn
-                        :disabled="btnDisabled"
-                        @click="registration"
+                          :disabled="btnDisabled"
+                          @click="registration"
                         >
                             Зарегистрироваться
                         </v-btn>
