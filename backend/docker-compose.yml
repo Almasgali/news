@@ -1,0 +1,39 @@
+services:
+  news_app:
+    image: 'news:0.0.1'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: news_app
+    depends_on:
+      - pg_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_db:5432/news
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    ports:
+      - 8080:8080
+
+  news_app_front:
+    image: 'news_frontend:0.0.1'
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: news_app_frontend
+    depends_on:
+      - news_app
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+
+  pg_db:
+    image: postgres
+    restart: always
+    container_name: pg_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=news
